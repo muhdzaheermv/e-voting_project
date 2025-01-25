@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Voter,ElectionOfficer
+from .models import VoterReg,ElectionOfficerReg
 
-admin.site.register(Voter)
+admin.site.register(VoterReg)
+admin.site.register(ElectionOfficerReg)
 
-admin.site.register(ElectionOfficer)

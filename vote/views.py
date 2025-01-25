@@ -1,107 +1,79 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from . models import VoterReg,ElectionOfficerReg
 
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import Voter,ElectionOfficer
-from django.contrib.auth.hashers import make_password  # To hash passwords
-from django.contrib.auth import logout
-from django.contrib.auth.hashers import check_password
+# Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request,'index.html')
 
-def voter_registration(request):
-    if request.method == 'POST':
-        # Get form data
-        fullname = request.POST.get('fullname')
-        username = request.POST.get('username')
-        phonenumber = request.POST.get('phonenumber')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        profile_picture = request.FILES.get('profile_picture')  # Get the uploaded file
 
-        # Hash the password for security
-        hashed_password = make_password(password)
+def home(request):
+    return render(request,'home.html')
 
-        # Create a new voter with the uploaded profile picture
-        Voter.objects.create(
-            fullname=fullname,
-            username=username,
-            phonenumber=phonenumber,
-            email=email,
-            password=hashed_password,
-            profile_picture=profile_picture  # Save the profile picture
-        )
+def register(request):
+   if request.method =='POST':
+      fname = request.POST.get('rfname')
+      phone = request.POST.get('rcontact')
+      email = request.POST.get('remail')
+      uname = request.POST.get('runame')
+      passw = request.POST.get('rpass')
+      reg(fullname=fname,contact=phone,email=email,username=uname,password=passw).save()
+      return render(request,'login.html')
+   else:
+      return render(request,'register.html')
+  
+def login(request):
+   if request.method=='POST':
+      uname = request.POST.get('runame')
+      passw = request.POST.get('rpass')
+      cr = reg.objects.filter(username=uname,password=passw)
+      if cr:
+         details = reg.objects.get(username=uname, password = passw)
+         username = details.username
+         request.session['cs']=username
 
-        return HttpResponse("Registration successful! Please login.")
-    
-    return render(request, 'voter_registration.html')
+         return render(request,'home.html')
+      else:
+         message="Invalid Username Or Password"
+         return render(request,'login.html',{'me':message})
+   else: 
+      return render(request,'login.html')
+  
+def officer_home(request):
+    return render(request,'officer_home.html')
 
-def voter_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        try:
-            voter = Voter.objects.get(username=username)
-            if check_password(password, voter.password):  # Check if the password matches
-                # After successful login, render the voter home page
-                return render(request, 'voter_home.html', {'voter': voter})
-            else:
-                return HttpResponse("Invalid username or password.")
-        except Voter.DoesNotExist:
-            return HttpResponse("Invalid username or password.")
-    
-    return render(request, 'voter_login.html')
 
-def voter_logout(request):
-    logout(request)
-    return redirect('vote:index') 
+def officer_register(request):
+   if request.method =='POST':
+      idno = request.POST.get('ridno')
+      fname = request.POST.get('rfname')
+      phone = request.POST.get('rcontact')
+      email = request.POST.get('remail')
+      address = request.POST.get('raddress')
+      uname = request.POST.get('runame')
+      passw = request.POST.get('rpass')
+      ElectionOfficerReg(id_no=idno,fullname=fname,contact=phone,email=email,address=address,username=uname,password=passw).save()
+      return render(request,'officer_login.html')
+   else:
+      return render(request,'officer_register.html')
 
-def election_officer_registration(request):
-    if request.method == 'POST':
-        # Get the form data
-        id_number = request.POST.get('id_number')
-        fullname = request.POST.get('fullname')
-        username = request.POST.get('username')
-        phonenumber = request.POST.get('phonenumber')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        password = request.POST.get('password')
-        profile_picture = request.FILES.get('profile_picture')  # Get the uploaded profile picture
 
-        # Hash the password
-        hashed_password = make_password(password)
-
-        # Create a new election officer
-        ElectionOfficer.objects.create(
-            id_number=id_number,
-            fullname=fullname,
-            username=username,
-            phonenumber=phonenumber,
-            email=email,
-            address=address,
-            password=hashed_password,
-            profile_picture=profile_picture  # Store the profile picture
-        )
-
-        return HttpResponse("Registration successful! Please login.")
-    
-    return render(request, 'election_officer_registration.html')
-
-def election_officer_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        try:
-            officer = ElectionOfficer.objects.get(username=username)
-            if check_password(password, officer.password):  # Check password
-                # Redirect to the officer's home page
-                return render(request, 'election_officer_home.html', {'officer': officer})
-            else:
-                return HttpResponse("Invalid username or password.")
-        except ElectionOfficer.DoesNotExist:
-            return HttpResponse("Invalid username or password.")
-    
-    return render(request, 'election_officer_login.html')
+def officer_login(request):
+   if request.method=='POST':
+      idno =  request.POST.get('ridno')
+      uname = request.POST.get('runame')
+      passw = request.POST.get('rpass')
+      cr = ElectionOfficerReg.objects.filter(id_no=idno,username=uname,password=passw)
+      if cr:
+         details = ElectionOfficerReg.objects.get(username=uname, password = passw,id_no=idno)
+         username = details.username
+         request.session['cs']=username
+         idno = details.id_no
+         request.session['lcu']=idno
+         
+         return render(request,'officer_home.html')
+      else:
+         message="Invalid Username Or Password"
+         return render(request,'officer_login.html',{'me':message})
+   else: 
+      return render(request,'officer_login.html')

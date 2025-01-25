@@ -1,21 +1,16 @@
-from django.conf import settings
-from django.conf.urls.static import static
-from django.urls import path
 from . import views
-
-app_name = 'vote'
+from django.contrib import admin
+from django.urls import path
 
 urlpatterns = [
-    path('', views.index, name='index'),  # Add the index page URL
-    
-    path('voter_register/', views.voter_registration, name='voter_registration'),
-    path('voter_login/', views.voter_login, name='voter_login'),
-    path('voter_logout/', views.voter_logout, name='voter_logout'),
-    
-    path('officer_register/', views.election_officer_registration, name='election_officer_registration'),
-    path('officer_login/', views.election_officer_login, name='election_officer_login'),
+    # path('admin/', admin.site.urls),
+   path('',views.index,name='index'),
+   path('index/',views.index,name='index'),  
+   
+   path('register/',views.register,name='register'), 
+   path('login/',views.login,name='login'),
+   
+   path('officer_register/',views.officer_register,name='officer_register'),
+   path('officer_login/',views.officer_login,name='officer_login'),
+   
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
