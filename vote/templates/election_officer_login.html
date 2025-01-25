@@ -5,8 +5,16 @@
 </head>
 <body>
     <h1>Election Officer Login</h1>
-    <p>Enter your credentials here.</p>
-    <!-- Placeholder for login form, can be updated later -->
-    <a href="{% url 'vote:index' %}">Back to Home</a>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="username">Username:</label><br>
+        <input type="text" name="username" required><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>

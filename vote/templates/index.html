@@ -27,7 +27,7 @@
 <body>
     <h1>Welcome to VoteSphere</h1>
     <p>Please choose your role to log in:</p>
-    <a href={% url 'vote:voter_registration' %} class="button">Election Officer Login</a>
-    <a href="" class="button">Voter Login</a>
+    <a href={% url 'vote:election_officer_registration' %} class="button">Election Officer Login</a>
+    <a href={% url 'vote:voter_registration' %} class="button">Voter Login</a>
 </body>
 </html>

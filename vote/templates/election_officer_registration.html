@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Election Officer Registration</title>
+</head>
+<body>
+    <h1>Election Officer Registration</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <label for="id_number">ID Number:</label><br>
+        <input type="text" name="id_number" required><br><br>
+
+        <label for="fullname">Full Name:</label><br>
+        <input type="text" name="fullname" required><br><br>
+
+        <label for="username">Username:</label><br>
+        <input type="text" name="username" required><br><br>
+
+        <label for="phonenumber">Phone Number:</label><br>
+        <input type="text" name="phonenumber" required><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label for="address">Address:</label><br>
+        <textarea name="address" required></textarea><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <label for="profile_picture">Profile Picture:</label><br>
+        <input type="file" name="profile_picture"><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
