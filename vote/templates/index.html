@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to VoteSphere</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .button {
+            font-size: 18px;
+            padding: 15px 25px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to VoteSphere</h1>
+    <p>Please choose your role to log in:</p>
+    <a href={% url 'vote:voter_registration' %} class="button">Election Officer Login</a>
+    <a href="" class="button">Voter Login</a>
+</body>
+</html>

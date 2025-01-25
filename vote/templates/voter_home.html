@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome, {{ voter.fullname }}!</title>
+</head>
+<body>
+    <h1>Welcome to Your Voter Dashboard</h1>
+    <p>Hello, {{ voter.fullname }}! You have successfully logged in.</p>
+    
+    <h3>Profile Details</h3>
+    <p><strong>Username:</strong> {{ voter.username }}</p>
+    <p><strong>Email:</strong> {{ voter.email }}</p>
+    <p><strong>Phone Number:</strong> {{ voter.phonenumber }}</p>
+    
+    <h3>What would you like to do next?</h3>
+    <ul>
+        <li><a href="#">Vote in Election</a></li>
+        <li><a href="#">View Voting Results</a></li>
+        <li><a href="{% url 'vote:voter_logout' %}">Log Out</a></li>
+    </ul>
+</body>
+</html>
