@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> Add station </title>
+    <link rel="stylesheet" href={% static "css/signup.css"  %}>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+    
+  <div class="container">
+    <div class="title">Add station</div>
+    <div class="content">
+      <form action="/create_election/" method="post">
+        {% csrf_token %}
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Station License No</span>
+            <input type="text" value={{idno}} placeholder="Enter License No" readonly></td>
+          </div>
+          <div class="input-box">
+            <span class="details">Name</span>
+            <input type="text" name="rfname" placeholder="Enter station Name" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Time</span>
+            <input type="text" name="rstime" placeholder="Enter Station Time" required >
+          </div>
+          <div class="input-box">
+            <span class="details">Time</span>
+            <input type="text" name="retime" placeholder="Enter Station Time" required >
+          </div>
+          <div class="input-box">
+            <span class="details">Location</span>
+            <input type="text" name="rdescription" placeholder="Enter Station Location" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Status</span>
+            <select name="rstatus">
+               <option value="available">available</option>
+               <option value="not available">not available</option>
+           </select>
+          </div>
+        </div>
+        <div class="button">
+            <input type="submit" value="Register">
+        </div>
+      </form>
+
+      <div class="sign-txt">Back to <a style="color: blue;" href="/ser_home">Home</a></div>
+    </div>
+
+  </div>
+  
+
+</body>
+</html>

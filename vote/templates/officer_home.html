@@ -3,9 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Officer</title>
+    <title>Officer Homepage</title>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>Welcome, Officer</h1>
+
+        <!-- Create Election Button -->
+        <div class="create-election">
+            <a href="{% url 'create_election' %}" class="btn btn-success">Create Election</a>
+        </div>
+
+        <h2>Elections</h2>
+        <div class="election-list">
+            {% for election in elections %}
+            <div class="election-item">
+                <h3>{{ election.name }}</h3>
+                <p>{{ election.description }}</p>
+                <!-- Button linking to election details -->
+                <a href="{% url 'election_details' election.id %}" class="btn btn-primary">
+                    View Details for Election {{ election.id }}
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
 </body>
 </html>

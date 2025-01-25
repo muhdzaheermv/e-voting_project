@@ -1,0 +1,17 @@
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="rname">Candidate Name:</label>
+    <input type="text" name="rname" value="{{ candidate.name }}" required>
+    
+    <label for="rprofile_picture">Profile Picture:</label>
+    <input type="file" name="rprofile_picture">
+    
+    <label for="rdescription">Description:</label>
+    <textarea name="rdescription">{{ candidate.description }}</textarea>
+    
+    <label for="rsubname">Subname:</label>
+    <input type="text" name="rsubname" value="{{ candidate.subname }}">
+    
+    <button type="submit">Update Candidate</button>
+ </form>
+ 
