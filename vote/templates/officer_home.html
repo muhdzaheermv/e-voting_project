@@ -27,6 +27,16 @@
             </div>
         {% endfor %}
         </div>
+
+        {% for election in elections %}
+            <tr>
+                <td>{{ election.name }}</td>
+                <td>
+                    <a href="{% url 'election_result' election.id %}" class="btn btn-primary">View Results</a>
+                </td>
+            </tr>
+        {% endfor %}
+
     </div>
 </body>
 </html>

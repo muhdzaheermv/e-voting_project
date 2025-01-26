@@ -256,6 +256,30 @@ def logout(request):
     request.session.flush()  # Clear all session data
     return redirect('login')
 
+def election_result(request, election_id):
+    # Get the election
+    election = get_object_or_404(Election, id=election_id)
+
+    # Get candidates and their vote counts
+    candidates = Candidate.objects.filter(election=election)
+    results = []
+
+    for candidate in candidates:
+        vote_count = Vote.objects.filter(candidate=candidate).count()
+        results.append({
+            'candidate': candidate,
+            'votes': vote_count,
+        })
+
+    # Sort results by vote count (descending)
+    results = sorted(results, key=lambda x: x['votes'], reverse=True)
+
+    return render(request, 'election_result.html', {
+        'election': election,
+        'results': results,
+    })
+
+
 
 
 
