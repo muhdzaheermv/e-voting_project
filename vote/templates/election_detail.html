@@ -125,14 +125,14 @@
                     <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
                         <div class="w3img-grids-info">
                             <div class="w3img-grids-info-gd position-relative">
-                                <a href="{% url 'edit_election' election.id %}">
+                                <a href="{% url 'view_candidates' election.id %}">
                                     <div class="page">
                                         <div class="photobox photobox_triangular photobox_scale-rotated">
                                             <div class="photobox__previewbox media-placeholder">
                                                 <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static "images/voter.png"  %} alt="">
                                             </div>
                                             <div class="photobox__info-wrapper">
-                                                <div class="photobox__info"><span>Edit</span></div>
+                                                <div class="photobox__info"><span>Candidate</span></div>
                                             </div>
                                         </div>
                                     </div>
@@ -140,7 +140,7 @@
                                 <div class="w3img-grids-info-gd-content mt-4">
                                     <a href="#gridsimg" class="titile-img d-block">
                                         <h4 class="mb-2">
-                                            Edit Election</h4>
+                                            Candidate</h4>
                                     </a>
                                     <p class=""></p>
 
@@ -152,7 +152,7 @@
                     <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
                         <div class="w3img-grids-info">
                             <div class="w3img-grids-info-gd position-relative">
-                                <a href="{% url 'delete_election' election.id %}">
+                                <a href="{% url 'add_eligible_voter' election.id %}">
                                     <div class="page">
 
                                         <div class="photobox photobox_triangular photobox_scale-rotated">
@@ -160,7 +160,7 @@
                                                 <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static "images/officer.png"  %} alt="">
                                             </div>
                                             <div class="photobox__info-wrapper">
-                                                <div class="photobox__info"><span>Delete</span></div>
+                                                <div class="photobox__info"><span>add_eligible_voter</span></div>
                                             </div>
                                         </div>
 
@@ -169,7 +169,7 @@
                                 <div class="w3img-grids-info-gd-content mt-4">
                                     <a href="#gridsimg" class="titile-img d-block">
                                         <h4 class="mb-2">
-                                            Delete Election</h4>
+                                            add_eligible_voter</h4>
                                     </a>
                                     <p class=""></p>
 
@@ -181,14 +181,14 @@
                     <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
                         <div class="w3img-grids-info">
                             <div class="w3img-grids-info-gd position-relative">
-                                <a href="{% url 'create_candidate' election.id %}">
+                                <a href="{% url 'election_result' election.id %}">
                                     <div class="page">
                                         <div class="photobox photobox_triangular photobox_scale-rotated">
                                             <div class="photobox__previewbox media-placeholder">
                                                 <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static "images/admin.png"  %} alt="">
                                             </div>
                                             <div class="photobox__info-wrapper">
-                                                <div class="photobox__info"><span>Election List</span></div>
+                                                <div class="photobox__info"><span>election_result</span></div>
                                             </div>
 
                                         </div>
@@ -197,7 +197,7 @@
                                 <div class="w3img-grids-info-gd-content mt-4">
                                     <a href="#gridsimg" class="titile-img d-block">
                                         <h4 class="mb-2">
-                                            create_candidate</h4>
+                                            election_result</h4>
                                     </a>
                                     <p class=""></p>
 
