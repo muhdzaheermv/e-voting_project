@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voter List - {{ election.name }}</title>
+    <style>
+        table {
+            width: 70%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Voter List for Election: {{ election.name }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th> <!-- Serial number column -->
+                <th>Username</th>
+                <th>Mobile Number</th>
+                <th>Election</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for voter in voters %}
+                <tr>
+                    <td>{{ forloop.counter }}</td> <!-- Display serial number -->
+                    <td>{{ voter.username }}</td>
+                    <td>{{ voter.contact }}</td>
+                    <td>{{ voter.election }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="">Back to Home</a>
+    </div>
+</body>
+</html>

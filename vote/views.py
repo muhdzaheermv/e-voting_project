@@ -278,6 +278,31 @@ def election_result(request, election_id):
         'election': election,
         'results': results,
     })
+    
+from django.shortcuts import render
+from .models import Vote, VoterReg, Election
+
+def voter_list(request, election_id):
+    # Get the election
+    election = Election.objects.get(id=election_id)
+
+    # Fetch all voters who have voted in this election
+    voted_voters = Vote.objects.filter(election=election).select_related('voter')
+
+    # Prepare data to display
+    voters_data = []
+    for vote in voted_voters:
+        voters_data.append({
+            'username': vote.voter.username,
+            'contact': vote.voter.contact,
+            'election': election.name,
+        })
+
+    return render(request, 'voter_list.html', {
+        'election': election,
+        'voters': voters_data,
+    })
+
 
 
 

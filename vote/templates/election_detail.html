@@ -64,6 +64,10 @@
                         <td colspan="4">No candidates available for this election.</td>
                     </tr>
                 {% endfor %}
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="{% url 'voter_list' election.id %}" class="btn btn-info">View Voters</a>
+                </div>
             </tbody>
         </table>
     </div>
