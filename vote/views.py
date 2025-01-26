@@ -41,9 +41,7 @@ def login(request):
    else: 
       return render(request,'login.html')
   
-def officer_home(request):
-    data = Election.objects.all()  # Fetch all elections
-    return render(request, 'officer_home.html', {'data': data})
+
 
 
 def officer_register(request):
@@ -74,12 +72,14 @@ def officer_login(request):
          idno = details.id_no
          request.session['lcu']=idno
          
-         return render(request,'officer_home.html')
+         return redirect('officer_home')
       else:
          message="Invalid Username Or Password"
          return render(request,'officer_login.html',{'me':message})
    else: 
       return render(request,'officer_login.html')
+  
+
   
 def create_election(request):
    idno=request.session['lcu']
@@ -372,6 +372,10 @@ def eligible_voter_list(request, election_id):
         'election': election,
         'eligible_voters': eligible_voters
     })
+    
+def officer_home(request):
+    elections = Election.objects.all()  # Fetch all elections
+    return render(request, 'officer_home.html', {'elections': elections})
 
 
 

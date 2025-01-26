@@ -1,42 +1,57 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Officer Homepage</title>
+    <title>Officer Home</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome, Officer</h1>
+    <h1>Welcome, {{ request.session.cs }}</h1>
+    <p>Here are the elections:</p>
 
-        <!-- Create Election Button -->
-        <div class="create-election">
-            <a href="{% url 'create_election' %}" class="btn btn-success">Create Election</a>
-        </div>
-
-        <h2>Elections</h2>
-        <div class="election-list">
-            {% for election in elections %}
-            <div class="election-item">
-                <h3>{{ election.name }}</h3>
-                <p>{{ election.description }}</p>
-                <!-- Button linking to election details -->
-                <a href="{% url 'election_detail' election.id %}" class="btn btn-primary">
-                    View Details for Election {{ election.id }}
-                </a>
-            </div>
-        {% endfor %}
-        </div>
-
-        {% for election in elections %}
+    <!-- Display all elections -->
+    <table>
+        <thead>
             <tr>
-                <td>{{ election.name }}</td>
-                <td>
-                    <a href="{% url 'election_result' election.id %}" class="btn btn-primary">View Results</a>
-                </td>
+                <th>Election Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Actions</th>
             </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% for election in elections %}
+                <tr>
+                    <td>{{ election.name }}</td>
+                    <td>{{ election.description }}</td>
+                    <td>{{ election.status }}</td>
+                    <td>{{ election.start_time }}</td>
+                    <td>{{ election.end_time }}</td>
+                    <td>
+                        <a href="{% url 'election_detail' election.id %}">View Details</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">No elections found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    </div>
+    <!-- Button to create a new election -->
+    <a href="{% url 'create_election' %}">
+        <button>Create New Election</button>
+    </a>
+
+    <!-- Logout button -->
+    <a href="{% url 'logout' %}">
+        <button>Logout</button>
+    </a>
+
 </body>
 </html>
