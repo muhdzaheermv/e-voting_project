@@ -1,61 +1,413 @@
-<!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Candidates - {{ election.name }}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Votesphere</title>
+    <!--/google-fonts -->
+    <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <!--//google-fonts -->
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="{% static 'css/style-starter.css' %}">
 </head>
+
 <body>
-    <div class="container">
-        <h1>Candidates for Election: {{ election.name }}</h1>
+    <!--/Header-->
+    <header id="site-header" class="fixed-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light stroke py-lg-0">
+                <h1><a class="navbar-brand pe-xl-5 pe-lg-4" href="index.html">
+                        <span class="sublog">Votes</span>phere
+                    </a></h1>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+                    <span class="navbar-toggler-icon fa icon-close fa-times"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarScroll">
+                    <ul class="navbar-nav me-lg-auto my-2 my-lg-0 navbar-nav-scroll">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href={% url 'index' %}>Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">About</a>
+                        </li>
+						<li class="nav-item">
+                            <a class="nav-link" href="{% url 'guide' %}">Guide</a>
+                        </li>
+                     
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                        </li>
 
-        <div class="actions">
-            <a href="{% url 'create_candidate' election.id %}" class="btn btn-success">Create Candidate</a>
-            <a href="{% url 'edit_candidate' election.id %}" class="btn btn-success">Edit Candidate</a>
-            <a href="{% url 'delete_candidate' election.id %}" class="btn btn-success">Delete Candidate</a>
+                    </ul>
+                    <ul class="navbar-nav search-right mt-lg-0 mt-2">
+                        <li class="nav-item" title="Search"><a href="#search" class="search-search">
+                                <span class="fas fa-search" aria-hidden="true"></span></a></li>
+                        <li class="nav-item me-lg-3"><a href="#gridsimg" class="phone-btn btn btn-primary btn-style d-none d-lg-block btn-style ms-2">Login</a></li>
+                    </ul>
+
+                    <!-- //toggle switch for light and dark theme -->
+
+                    <!-- search popup -->
+                    <div id="search" class="w3lpop-overlay">
+                        <div class="w3lpopup">
+                            <form action="#formsearch" method="GET" class="d-sm-flex">
+                                <input class="form-control me-2" type="search" placeholder="Search here..." aria-label="Search" required="">
+                                <button class="btn btn-style btn-primary" type="submit">Search</button>
+                                <a class="close" href="#formsearch">&times;</a>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /search popup -->
+                </div>
+                <!-- toggle switch for light and dark theme -->
+                <div class="mobile-position">
+                    <nav class="navigation">
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="checkbox">
+                                <input type="checkbox" id="checkbox">
+                                <div class="mode-container">
+                                    <i class="gg-sun"></i>
+                                    <i class="gg-moon"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </nav>
+                </div>
+                <!-- //toggle switch for light and dark theme -->
+            </nav>
         </div>
+    </header>
+    <!--//Header-->
+    <!-- main-slider -->
+    <section class="w3l-main-content" id="home">
+        <div class="container">
+            <div class="row align-items-center w3l-slider-grids">
+                <div class="col-lg-6 w3l-slider-left-info pe-lg-5">
+                    <h6 class="title-subhny mb-2">Election status : {{ election.status }}</h6>
+                    <h3 class="mb-2 title"> <span>Manage </span>Election</h3>
+                    <h3 class="mb-4 title">{{ election.name }}</h3>
+                    <p class="w3banr-p">Start Time : {{ election.start_time }}</p>
+                    <p class="w3banr-p">End Time : {{ election.end_time }}</p><br>
+                    <p class="w3banr-p">{{ election.description }}</p>
+                    <div class="w3l-buttons mt-sm-5 mt-4">
+                        <a class="btn btn-primary btn-style me-2" href={% url 'create_candidate' election.id %}>Create Candidate</a>
+                        <a class="btn btn-primary btn-style me-2" href={% url 'edit_candidate' election.id %}>Edit Candidate </a>
+                        <a class="btn btn-outline-primary btn-style mt-3 me-2" {% url 'delete_candidate' election.id %}> Delete Candidate </a>
+                        <a class="btn btn-outline-primary btn-style mt-3  " href={% url 'election_detail' election.id %}> Go Back </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 w3l-slider-right-info mt-lg-0 mt-5 ps-lg-5 align-items-center">
+                    <div class="w3l-main-slider banner-slider">
 
-        <div class="election-details">
-            <p><strong>Election Description:</strong> {{ election.description }}</p>
-            <p><strong>Start Time:</strong> {{ election.start_time }}</p>
-            <p><strong>End Time:</strong> {{ election.end_time }}</p>
-            <p><strong>Status:</strong> {{ election.status }}</p>
-        </div>
-
-        <h3>Candidates:</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Profile Picture</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for candidate in candidates %}
-                    <tr>
-                        <td>{{ candidate.name }}</td>
-                        <td><img src="{{ candidate.profile_picture.url }}" alt="Profile Picture" width="50"></td>
-                        <td>{{ candidate.description }}</td>
-                        <td>
-                            <!-- Edit Candidate Button -->
-                            <a href="{% url 'edit_candidate' candidate.id %}" class="btn btn-primary">Edit</a>
+                                <div class="slider-info">
+                                    <div class="">
+                                        <img src={% static "images/election.png"  %} alt="" class="radius-image img-fluid">
+                                    </div>
+                                </div>
                             
-                            <!-- Delete Candidate Button -->
-                            <a href="{% url 'delete_candidate' candidate.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this candidate?')">Delete</a>
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="4">No candidates available for this election.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /main-slider -->
+    
+    
+    <!--//circles-section-->
+    <!--/img-grids-->
+    
+    <section class="w3l-img-grids" id="gridsimg">
+        <div class="blog py-5" id="classes">
+            <div class="container py-lg-5">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
+                        <div class="w3img-grids-info">
+                            <div class="w3img-grids-info-gd position-relative">
+                                <a href="{% url 'view_candidates' election.id %}">
+                                    <div class="page">
+                                        <div class="photobox photobox_triangular photobox_scale-rotated">
+                                            <div class="photobox__previewbox media-placeholder">
+                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static "images/voter.png"  %} alt="">
+                                            </div>
+                                            <div class="photobox__info-wrapper">
+                                                <div class="photobox__info"><span>Candidate</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="w3img-grids-info-gd-content mt-4">
+                                    <a href="#gridsimg" class="titile-img d-block">
+                                        <h4 class="mb-2">
+                                            Candidate</h4>
+                                    </a>
+                                    <p class=""></p>
 
-        <br>
-        <a href="{% url 'election_detail' election.id %}" class="btn btn-secondary">Back to Election Details</a>
-    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
+                        <div class="w3img-grids-info">
+                            <div class="w3img-grids-info-gd position-relative">
+                                <a href="{% url 'add_eligible_voter' election.id %}">
+                                    <div class="page">
+
+                                        <div class="photobox photobox_triangular photobox_scale-rotated">
+                                            <div class="photobox__previewbox media-placeholder">
+                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static "images/officer.png"  %} alt="">
+                                            </div>
+                                            <div class="photobox__info-wrapper">
+                                                <div class="photobox__info"><span>add_eligible_voter</span></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                <div class="w3img-grids-info-gd-content mt-4">
+                                    <a href="#gridsimg" class="titile-img d-block">
+                                        <h4 class="mb-2">
+                                            add_eligible_voter</h4>
+                                    </a>
+                                    <p class=""></p>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
+                        <div class="w3img-grids-info">
+                            <div class="w3img-grids-info-gd position-relative">
+                                <a href="{% url 'election_result' election.id %}">
+                                    <div class="page">
+                                        <div class="photobox photobox_triangular photobox_scale-rotated">
+                                            <div class="photobox__previewbox media-placeholder">
+                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static "images/admin.png"  %} alt="">
+                                            </div>
+                                            <div class="photobox__info-wrapper">
+                                                <div class="photobox__info"><span>election_result</span></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="w3img-grids-info-gd-content mt-4">
+                                    <a href="#gridsimg" class="titile-img d-block">
+                                        <h4 class="mb-2">
+                                            election_result</h4>
+                                    </a>
+                                    <p class=""></p>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!--//img-grids->
+   
+    <!--/video-section-->
+    
+    <!--//video-section-->
+
+    <!--/tabs-faqs-->
+    
+    <!--//w3l-project-->
+    <!-- footer -->
+    <section class="w3l-footer-29-main">
+        <div class="footer-29 py-5">
+            <div class="container py-lg-4">
+                <div class="row footer-top-29">
+                    <div class="col-lg-4 col-md-6 footer-list-29 footer-1 pe-lg-5">
+                        <div class="footer-logo mb-4">
+                            <h2><a class="navbar-brand" href="index.html">
+                                    <span class="sublog">Digit</span>Marketing
+                                </a></h2>
+                        </div>
+                        <p>Lorem ipsum dolor sit, amet consectetur elit.Pellen tesque libero ut justo, ultrices in ligula accusantium libero fugit.
+
+                        </p>
+                        <div class="w3l-two-buttons mt-4">
+                            <a href="#trail" class="btn btn-primary btn-style"> Try it For Free </a>
+                        </div>
+                        <div class="main-social-footer-29 mt-5">
+                            <a href="#facebook" class="facebook"><span class="fab fa-facebook-f"></span></a>
+                            <a href="#twitter" class="twitter"><span class="fab fa-twitter"></span></a>
+                            <a href="#instagram" class="instagram"><span class="fab fa-instagram"></span></a>
+                            <a href="#linkedin" class="linkedin"><span class="fab fa-linkedin-in"></span></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 footer-list-29 footer-2 mt-sm-0 mt-5">
+
+                        <ul>
+                            <h6 class="footer-title-29">Links</h6>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="blog.html"> Blog posts</a></li>
+                            <li><a href="services.html">Services</a></li>
+                            <li><a href="blog.html"> Blog posts</a></li>
+                            <li><a href="contact.html">Contact us</a></li>
+
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-6 footer-list-29 footer-3 mt-lg-0 mt-5">
+                        <h6 class="footer-title-29">Services</h6>
+                        <ul>
+                            <li><a href="#traning">Web Design</a></li>
+                            <li><a href="#traning">Development</a></li>
+                            <li><a href="#traning">Marketing Plans</a></li>
+                            <li><a href="#marketplace">Digital Services</a></li>
+                            <li><a href="#experts">Email Marketing</a></li>
+                            <li><a href="#platform">Product Selling</a></li>
+                        </ul>
+
+                    </div>
+                    <div class="col-lg-2 col-md-6  footer-list-29 footer-4 mt-lg-0 mt-5">
+                        <h6 class="footer-title-29">More Info</h6>
+                        <ul>
+                            <li><a href="#seo">Offline SEO</a></li>
+                            <li><a href="#traning">Development</a></li>
+                            <li><a href="#hack">Growth Hacking</a></li>
+                            <li><a href="#studio">Film Studio</a></li>
+                            <li><a href="#branding">Branding</a></li>
+                            <li><a href="#experts">Email Marketing</a></li>
+                            <li><a href="#marketplace">Lead Generation</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-6  footer-list-29 footer-4 mt-lg-0 mt-5">
+                        <h6 class="footer-title-29">Support</h6>
+                        <ul>
+                            <li><a href="#awards">Awards</a></li>
+                            <li><a href="#secutiry">Security</a></li>
+
+                            <li><a href="#proj">Products</a></li>
+                            <li><a href="#efaq">faQ</a></li>
+                            <li><a href="#help">Help</a></li>
+                            <li><a href="#mail">Mail Us</a></li>
+                            <li><a href="#terms">Terms
+                                </a></li>
+                            <li><a href="#policy">Privacy Policy</a></li>
+
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- copyright -->
+        <section class="w3l-copyright text-center">
+            <div class="container">
+                <p class="copy-footer-29">© 2021 DigitMarketing. All rights reserved. Design by <a href="https://w3layouts.com/" target="_blank">
+                        W3Layouts</a></p>
+            </div>
+
+            <!-- move top -->
+            <button onclick="topFunction()" id="movetop" title="Go to top">
+                <span class="fas fa-arrow-up"></span>
+            </button>
+            <script>
+                // When the user scrolls down 20px from the top of the document, show the button
+                window.onscroll = function() {
+                    scrollFunction()
+                };
+
+                function scrollFunction() {
+                    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                        document.getElementById("movetop").style.display = "block";
+                    } else {
+                        document.getElementById("movetop").style.display = "none";
+                    }
+                }
+
+                // When the user clicks on the button, scroll to the top of the document
+                function topFunction() {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                }
+
+            </script>
+            <!-- /move top -->
+        </section>
+        <!-- //copyright -->
+    </section>
+    <!-- //footer -->
+    <!-- Js scripts -->
+    <!-- Template JavaScript -->
+    <script src={% static "js/jquery-3.3.1.min.js"  %}></script>
+    <script src={% static "js/theme-change.js"  %}></script>
+     <script src={% static "js/jquery-1.9.1.min.js"  %}></script>
+    <!-- faq -->
+    <script>
+        const items = document.querySelectorAll(".accordion button");
+
+        function toggleAccordion() {
+            const itemToggle = this.getAttribute('aria-expanded');
+
+            for (i = 0; i < items.length; i++) {
+                items[i].setAttribute('aria-expanded', 'false');
+            }
+
+            if (itemToggle == 'false') {
+                this.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        items.forEach(item => item.addEventListener('click', toggleAccordion));
+
+    </script>
+    <!-- //faq -->
+    <!-- MENU-JS -->
+    <script>
+        $(window).on("scroll", function() {
+            var scroll = $(window).scrollTop();
+
+            if (scroll >= 80) {
+                $("#site-header").addClass("nav-fixed");
+            } else {
+                $("#site-header").removeClass("nav-fixed");
+            }
+        });
+
+        //Main navigation Active Class Add Remove
+        $(".navbar-toggler").on("click", function() {
+            $("header").toggleClass("active");
+        });
+        $(document).on("ready", function() {
+            if ($(window).width() > 991) {
+                $("header").removeClass("active");
+            }
+            $(window).on("resize", function() {
+                if ($(window).width() > 991) {
+                    $("header").removeClass("active");
+                }
+            });
+        });
+
+    </script>
+    <!-- //MENU-JS -->
+
+    <!-- disable body scroll which navbar is in active -->
+    <script>
+        $(function() {
+            $('.navbar-toggler').click(function() {
+                $('body').toggleClass('noscroll');
+            })
+        });
+
+    </script>
+    <!-- //disable body scroll which navbar is in active -->
+
+    <!-- //bootstrap -->
+    <script src={% static "js/bootstrap.min.js"  %}></script>
+
 </body>
+
 </html>
