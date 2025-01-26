@@ -11,14 +11,14 @@
 <body>
     
   <div class="container">
-    <div class="title">STATION PROVIDER</div>
+    <div class="title">Officer Register</div>
     <div class="content">
       <form action="/officer_register/" method="post">
         {% csrf_token %}
         <div class="user-details">
           <div class="input-box">
-            <span class="details">Station License No</span>
-            <input type="text" name="ridno" placeholder="Enter License No" required>
+            <span class="details">Election ID No</span>
+            <input type="text" name="ridno" placeholder="Enter election id number" required>
           </div>
           <div class="input-box">
             <span class="details">Name</span>
@@ -49,8 +49,8 @@
             <input type="submit" value="Register">
         </div>
       </form>
-      <div class="sign-txt">Already have an account? <a style="color: blue;" href="/ser_login/">Login</a></div>
-      <div class="sign-txt">Back to <a style="color: blue;" href="/index">Home</a></div>
+      <div class="sign-txt">Already have an account? <a style="color: blue;" href={% url 'officer_login' %}>Login</a></div>
+      <div class="sign-txt">Back to <a style="color: blue;" href={% url 'index' %}>Home</a></div>
     </div>
 
   </div>

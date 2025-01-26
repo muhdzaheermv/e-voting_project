@@ -11,13 +11,13 @@
 <body>
     
   <div class="container">
-    <div class="title">USER REGISTRATION</div>
+    <div class="title">VOTER REGISTRATION</div>
     <div class="content">
       <form action="/register/" method="post">
          {% csrf_token %}
         <div class="user-details">
           <div class="input-box">
-            <span class="details">Name</span>
+            <span class="details">Full name</span>
             <input type="text" name="rfname" placeholder="Enter Your Name" required>
           </div>
           <div class="input-box">
@@ -42,7 +42,7 @@
         </div>
       </form>
       <div class="sign-txt">Already have an account? <a style="color: blue;" href="{% url 'login' %}">Login</a></div>
-      <div class="sign-txt">Back to <a href="#">Home</a></div>
+      <div class="sign-txt">Back to <a href={% url 'index' %}>Home</a></div>
     </div>
 
   </div>

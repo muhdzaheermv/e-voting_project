@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - youtube.com/codingnepal -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href={% static "css/login.css"  %}>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+<body>
+  
+  <div class="wrapper">
+    <header>ev Login</header>
+    <form action="/login/" method="post">
+      {% csrf_token %}
+      <div class="field email">
+        <div class="input-area">
+          <input type="text" name="runame" placeholder="Enter User Name">
+          <i class="icon fas fa-envelope"></i>
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+        <div class="error error-txt">Username can't be blank</div>
+      </div>
+      <div class="field password">
+        <div class="input-area">
+          <input type="password" name="rpass" placeholder="Password">
+          <i class="icon fas fa-lock"></i>
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+        <div class="error error-txt">Password can't be blank</div>
+      </div>
+    
+      <input type="submit" value="LOGIN">
+    </form>
+    <div class="sign-txt">Not yet member? <a href="/register/">Signup now</a></div>
+    <div class="sign-txt">Station Operator? <a href="/ser_login/">Sign now</a></div>
+    <div class="sign-txt">Back to <a href="/index/">Home</a></div>
+  </div>
+  
+
+
+</body>
+</html>
