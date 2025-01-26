@@ -5,11 +5,18 @@
 </head>
 <body>
     <h1>Add Eligible Voter for Election: {{ election.name }}</h1>
-    <form method="POST">
+
+    {% if message %}
+    <p style="color: green;">{{ message }}</p>
+    {% endif %}
+
+    <form method="post">
         {% csrf_token %}
-        <label for="phone_number">Voter's Phone Number:</label>
-        <input type="text" name="phone_number" required>
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" id="phone_number" name="phone_number" required>
         <button type="submit">Add Voter</button>
     </form>
+
+    <a href="{% url 'election_detail' election.id %}">Back to Election Details</a>
 </body>
 </html>

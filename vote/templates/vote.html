@@ -1,22 +1,27 @@
-<h1>Vote for {{ election.name }}</h1>
-<p>{{ election.description }}</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vote</title>
+</head>
+<body>
+    <h1>Vote in Election: {{ election.name }}</h1>
 
-<form method="POST">
-    {% csrf_token %}
-    <ul>
+    {% if message %}
+    <p style="color: red;">{{ message }}</p>
+    {% endif %}
+
+    {% if candidates %}
+    <form method="post">
+        {% csrf_token %}
+        <h2>Choose a candidate:</h2>
         {% for candidate in candidates %}
-            <li>
-                <input type="radio" name="candidate_id" value="{{ candidate.id }}" id="candidate-{{ candidate.id }}">
-                <label for="candidate-{{ candidate.id }}">
-                    <img src="{{ candidate.profile_picture.url }}" alt="{{ candidate.name }}" width="50">
-                    {{ candidate.name }} - {{ candidate.subname }}
-                </label>
-            </li>
+        <div>
+            <input type="radio" name="candidate_id" value="{{ candidate.id }}" id="candidate-{{ candidate.id }}">
+            <label for="candidate-{{ candidate.id }}">{{ candidate.name }}</label>
+        </div>
         {% endfor %}
-    </ul>
-    <button type="submit" class="btn btn-primary">Cast Vote</button>
-</form>
-
-{% if message %}
-    <p class="error">{{ message }}</p>
-{% endif %}
+        <button type="submit">Submit Vote</button>
+    </form>
+    {% endif %}
+</body>
+</html>

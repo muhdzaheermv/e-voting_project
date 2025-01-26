@@ -45,6 +45,8 @@ urlpatterns = [
     
     path('eligible_voter_list/<int:election_id>/', views.eligible_voter_list, name='eligible_voter_list'),
     
+    path('election/<int:election_id>/eligible_voters/', views.eligible_voter_list, name='eligible_voters')
+    
     
      
      

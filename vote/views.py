@@ -211,6 +211,7 @@ def available_elections(request):
 
     return render(request, 'available_elections.html', {'elections': elections})
 
+
 def vote(request, election_id):
     # Ensure the voter is logged in
     voter_username = request.session.get('cs')
@@ -222,6 +223,16 @@ def vote(request, election_id):
     election = get_object_or_404(Election, id=election_id)
     candidates = Candidate.objects.filter(election=election)
 
+    # Verify if the voter is eligible
+    eligible_voter = EligibleVoter.objects.filter(election=election, phone_number=voter.contact).first()
+    if not eligible_voter:
+        return render(request, 'vote.html', {
+            'election': election,
+            'candidates': candidates,
+            'message': 'You are not eligible to vote in this election. Please contact the election officer.'
+        })
+
+    # Handle vote submission
     if request.method == 'POST':
         candidate_id = request.POST.get('candidate_id')
 
@@ -250,6 +261,7 @@ def vote(request, election_id):
             })
 
     return render(request, 'vote.html', {'election': election, 'candidates': candidates})
+
 
 
 
@@ -307,26 +319,22 @@ def voter_list(request, election_id):
 # Add Eligible Voter to Election
 def add_eligible_voter(request, election_id):
     election = get_object_or_404(Election, id=election_id)
-    
+
     if request.method == 'POST':
         phone_number = request.POST.get('phone_number')
-        
-        try:
-            voter = VoterReg.objects.get(contact=phone_number)  # Lookup the voter by phone number
-            
-            # Check if the voter is already eligible for this election
-            if EligibleVoter.objects.filter(voter=voter, election=election).exists():
-                messages.error(request, 'This voter is already eligible for this election.')
-                return redirect('add_eligible_voter', election_id=election.id)
 
-            # Create a new EligibleVoter record
-            EligibleVoter.objects.create(election=election, voter=voter, phone_number=phone_number)
-            messages.success(request, 'Eligible voter added successfully!')
-            return redirect('election_detail', election_id=election.id)
-        
-        except VoterReg.DoesNotExist:
-            messages.error(request, 'No voter found with this phone number.')
-            return redirect('add_eligible_voter', election_id=election.id)
+        # Check if the phone number is already eligible for this election
+        if EligibleVoter.objects.filter(election=election, phone_number=phone_number).exists():
+            message = "This phone number is already eligible to vote in this election."
+        else:
+            # Add the eligible voter
+            EligibleVoter.objects.create(election=election, phone_number=phone_number)
+            message = "Eligible voter added successfully!"
+
+        return render(request, 'add_eligible_voter.html', {
+            'election': election,
+            'message': message
+        })
 
     return render(request, 'add_eligible_voter.html', {'election': election})
 
@@ -360,7 +368,6 @@ def delete_eligible_voter(request, eligible_voter_id):
 def eligible_voter_list(request, election_id):
     election = get_object_or_404(Election, id=election_id)
     eligible_voters = EligibleVoter.objects.filter(election=election)
-
     return render(request, 'eligible_voter_list.html', {
         'election': election,
         'eligible_voters': eligible_voters
