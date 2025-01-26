@@ -38,6 +38,14 @@ urlpatterns = [
     path('result/<int:election_id>/', views.election_result, name='election_result'),
     
     path('voters/<int:election_id>/', views.voter_list, name='voter_list'),
+    
+    path('add_eligible_voter/<int:election_id>/', views.add_eligible_voter, name='add_eligible_voter'),
+    path('edit_eligible_voter/<int:eligible_voter_id>/', views.edit_eligible_voter, name='edit_eligible_voter'),
+    path('delete_eligible_voter/<int:eligible_voter_id>/', views.delete_eligible_voter, name='delete_eligible_voter'),
+    
+    path('eligible_voter_list/<int:election_id>/', views.eligible_voter_list, name='eligible_voter_list'),
+    
+    
      
      
     

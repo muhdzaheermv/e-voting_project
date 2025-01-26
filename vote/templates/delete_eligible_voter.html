@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Eligible Voter</title>
+</head>
+<body>
+    <h1>Are you sure you want to delete the eligible voter?</h1>
+    <p>Voter: {{ eligible_voter.voter.username }} - Phone Number: {{ eligible_voter.phone_number }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Delete Voter</button>
+    </form>
+</body>
+</html>

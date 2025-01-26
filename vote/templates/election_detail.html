@@ -67,6 +67,7 @@
 
                 <div style="text-align: center; margin-top: 20px;">
                     <a href="{% url 'voter_list' election.id %}" class="btn btn-info">View Voters</a>
+                    <a href="{% url 'eligible_voters' election_id=election.id %}" class="btn">Manage Eligible Voters</a>
                 </div>
             </tbody>
         </table>

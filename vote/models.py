@@ -44,3 +44,13 @@ class Vote(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+class EligibleVoter(models.Model):
+    election = models.ForeignKey(Election, related_name='eligible_voters', on_delete=models.CASCADE)
+    voter = models.ForeignKey(VoterReg, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=15)  # Store the phone number as a string
+
+    def __str__(self):
+        return f"{self.voter.username} - {self.election.name}"
+
+
+

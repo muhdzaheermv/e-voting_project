@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from . models import VoterReg,ElectionOfficerReg,Election,Candidate,Vote
+from . models import VoterReg,ElectionOfficerReg,Election,Candidate,Vote,EligibleVoter
+from django.contrib import messages
 from datetime import datetime
 
 # Create your views here.
@@ -279,8 +280,6 @@ def election_result(request, election_id):
         'results': results,
     })
     
-from django.shortcuts import render
-from .models import Vote, VoterReg, Election
 
 def voter_list(request, election_id):
     # Get the election
@@ -302,6 +301,74 @@ def voter_list(request, election_id):
         'election': election,
         'voters': voters_data,
     })
+    
+
+
+# Add Eligible Voter to Election
+def add_eligible_voter(request, election_id):
+    election = get_object_or_404(Election, id=election_id)
+    
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        
+        try:
+            voter = VoterReg.objects.get(contact=phone_number)  # Lookup the voter by phone number
+            
+            # Check if the voter is already eligible for this election
+            if EligibleVoter.objects.filter(voter=voter, election=election).exists():
+                messages.error(request, 'This voter is already eligible for this election.')
+                return redirect('add_eligible_voter', election_id=election.id)
+
+            # Create a new EligibleVoter record
+            EligibleVoter.objects.create(election=election, voter=voter, phone_number=phone_number)
+            messages.success(request, 'Eligible voter added successfully!')
+            return redirect('election_detail', election_id=election.id)
+        
+        except VoterReg.DoesNotExist:
+            messages.error(request, 'No voter found with this phone number.')
+            return redirect('add_eligible_voter', election_id=election.id)
+
+    return render(request, 'add_eligible_voter.html', {'election': election})
+
+# Edit Eligible Voter
+def edit_eligible_voter(request, eligible_voter_id):
+    eligible_voter = get_object_or_404(EligibleVoter, id=eligible_voter_id)
+    
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        
+        # Update phone number
+        eligible_voter.phone_number = phone_number
+        eligible_voter.save()
+        messages.success(request, 'Eligible voter updated successfully!')
+        return redirect('election_detail', election_id=eligible_voter.election.id)
+
+    return render(request, 'edit_eligible_voter.html', {'eligible_voter': eligible_voter})
+
+# Delete Eligible Voter
+def delete_eligible_voter(request, eligible_voter_id):
+    eligible_voter = get_object_or_404(EligibleVoter, id=eligible_voter_id)
+    
+    if request.method == 'POST':
+        eligible_voter.delete()
+        messages.success(request, 'Eligible voter deleted successfully!')
+        return redirect('election_detail', election_id=eligible_voter.election.id)
+
+    return render(request, 'delete_eligible_voter.html', {'eligible_voter': eligible_voter})
+
+# View to display the list of eligible voters for a specific election
+def eligible_voter_list(request, election_id):
+    election = get_object_or_404(Election, id=election_id)
+    eligible_voters = EligibleVoter.objects.filter(election=election)
+
+    return render(request, 'eligible_voter_list.html', {
+        'election': election,
+        'eligible_voters': eligible_voters
+    })
+
+
+
+
 
 
 

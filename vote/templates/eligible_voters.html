@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eligible Voters - {{ election.name }}</title>
+    <style>
+        table {
+            width: 70%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Eligible Voters for Election: {{ election.name }}</h1>
+
+    <a href="{% url 'add_eligible_voter' election_id=election.id %}">Add Eligible Voter</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Voter Username</th>
+                <th>Mobile Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for eligible_voter in eligible_voters %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ eligible_voter.voter.username }}</td>
+                    <td>{{ eligible_voter.voter.contact }}</td>
+                    <td>
+                        <a href="{% url 'edit_eligible_voter' eligible_voter_id=eligible_voter.id %}">Edit</a> |
+                        <a href="{% url 'delete_eligible_voter' eligible_voter_id=eligible_voter.id %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

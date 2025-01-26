@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Eligible Voter</title>
+</head>
+<body>
+    <h1>Edit Eligible Voter for Election: {{ eligible_voter.election.name }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="phone_number">Voter's Phone Number:</label>
+        <input type="text" name="phone_number" value="{{ eligible_voter.phone_number }}" required>
+        <button type="submit">Update Voter</button>
+    </form>
+</body>
+</html>
