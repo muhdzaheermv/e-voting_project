@@ -18,7 +18,8 @@ class ElectionOfficerReg(models.Model):
     password=models.CharField(max_length=20)
     
 class Election(models.Model):
-    election_no=models.IntegerField()
+    election_officer = models.ForeignKey(ElectionOfficerReg, on_delete=models.CASCADE, related_name='elections')
+    election_no = models.IntegerField(unique=True)
     name=models.CharField(max_length=20)
     start_time=models.CharField(max_length=20)
     end_time=models.CharField(max_length=20)

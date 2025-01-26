@@ -90,18 +90,40 @@ def officer_login(request):
   
 
   
+# views.py
 def create_election(request):
-   idno=request.session['lcu']
-   if request.method =='POST':
-      fname = request.POST.get('rfname')
-      start_time = request.POST.get('rstime')
-      end_time = request.POST.get('retime')
-      description = request.POST.get('rdescription')
-      status = request.POST.get('rstatus')
-      Election(election_no=idno,name=fname,start_time=start_time,end_time=end_time,description=description,status=status).save()
-      return render(request,'officer_home.html',{'message': 'Election created successfully!'})
-   else:
-      return render(request,'create_election.html',{'idno':idno})
+    officer_id = request.session.get('lcu')  # Get the officer's ID from the session
+
+    if request.method == 'POST':
+        election_no = request.POST.get('relection_no')
+        fname = request.POST.get('rfname')
+        start_time = request.POST.get('rstime')
+        end_time = request.POST.get('retime')
+        description = request.POST.get('rdescription')
+        status = request.POST.get('rstatus')
+
+        # Check if the election number already exists
+        if Election.objects.filter(election_no=election_no).exists():
+            messages.error(request, 'Election number already exists. Please choose a different one.')
+            return render(request, 'create_election.html')
+
+        # Get the officer from the session and create the election
+        officer = ElectionOfficerReg.objects.get(id_no=officer_id)
+        Election.objects.create(
+            election_officer=officer,  # Link the election to the officer
+            election_no=election_no,
+            name=fname,
+            start_time=start_time,
+            end_time=end_time,
+            description=description,
+            status=status
+        )
+
+        messages.success(request, 'Election created successfully!')
+        return redirect('officer_home')  # Redirect to officer home page
+
+    return render(request, 'create_election.html')
+
   
 def election_list(request):
     data=Election.objects.all()
@@ -151,17 +173,12 @@ def delete_election(request, election_id):
     except Election.DoesNotExist:
         return render(request, 'officer_home.html', {'message': 'Election not found!'})
     
-def election_detail(request, id):
-    # Fetch the election by ID
-    election = Election.objects.get(election_no=id)
-
-    # Fetch associated candidates
-    candidates = Candidate.objects.filter(election=election)
-
-    return render(request, 'election_detail.html', {
-        'election': election,
-        'candidates': candidates
-    })
+def election_detail(request, election_id):
+    try:
+        election = Election.objects.get(id=election_id)
+        return render(request, 'election_detail.html', {'election': election})
+    except Election.DoesNotExist:
+        return render(request, '404.html', {'message': 'Election not found.'})
     
 
 def edit_election(request, election_id):
@@ -382,8 +399,14 @@ def eligible_voter_list(request, election_id):
         'eligible_voters': eligible_voters
     })
     
+
 def officer_home(request):
-    elections = Election.objects.all()  # Fetch all elections
+    officer_id = request.session.get('lcu')
+    officer = ElectionOfficerReg.objects.get(id_no=officer_id)
+
+    # Get elections created by the officer
+    elections = officer.elections.all()
+
     return render(request, 'officer_home.html', {'elections': elections})
 
 

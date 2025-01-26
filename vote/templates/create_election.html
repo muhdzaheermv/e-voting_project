@@ -1,59 +1,49 @@
-{% load static %}
+<!-- create_election.html -->
 <!DOCTYPE html>
-<!-- Created By CodingLab - www.codinglabweb.com -->
-<html lang="en" dir="ltr">
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <title> Add station </title>
-    <link rel="stylesheet" href={% static "css/signup.css"  %}>
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   </head>
+    <title>Create Election</title>
+</head>
 <body>
+    <h1>Create New Election</h1>
     
-  <div class="container">
-    <div class="title">Add station</div>
-    <div class="content">
-      <form action="/create_election/" method="post">
+    <!-- Display any messages -->
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <form method="POST">
         {% csrf_token %}
-        <div class="user-details">
-          <div class="input-box">
-            <span class="details">Station License No</span>
-            <input type="text" value={{idno}} placeholder="Enter License No" readonly></td>
-          </div>
-          <div class="input-box">
-            <span class="details">Name</span>
-            <input type="text" name="rfname" placeholder="Enter station Name" required>
-          </div>
-          <div class="input-box">
-            <span class="details">Time</span>
-            <input type="text" name="rstime" placeholder="Enter Station Time" required >
-          </div>
-          <div class="input-box">
-            <span class="details">Time</span>
-            <input type="text" name="retime" placeholder="Enter Station Time" required >
-          </div>
-          <div class="input-box">
-            <span class="details">Location</span>
-            <input type="text" name="rdescription" placeholder="Enter Station Location" required>
-          </div>
-          <div class="input-box">
-            <span class="details">Status</span>
-            <select name="rstatus">
-               <option value="available">available</option>
-               <option value="not available">not available</option>
-           </select>
-          </div>
-        </div>
-        <div class="button">
-            <input type="submit" value="Register">
-        </div>
-      </form>
+        <label for="relection_no">Election Number:</label>
+        <input type="text" name="relection_no" required><br><br>
 
-      <div class="sign-txt">Back to <a style="color: blue;" href="/ser_home">Home</a></div>
-    </div>
+        <label for="rfname">Election Name:</label>
+        <input type="text" name="rfname" required><br><br>
 
-  </div>
-  
+        <label for="rstime">Start Time:</label>
+        <input type="datetime-local" name="rstime" required><br><br>
 
+        <label for="retime">End Time:</label>
+        <input type="datetime-local" name="retime" required><br><br>
+
+        <label for="rdescription">Description:</label>
+        <textarea name="rdescription" required></textarea><br><br>
+
+        <label for="rstatus">Status:</label>
+        <select name="rstatus">
+            <option value="Not Available">Not Available</option>
+            <option value="Available">Available</option>
+        </select><br><br>
+
+        <button type="submit">Create Election</button>
+    </form>
+    
+    <br>
+    <a href="{% url 'officer_home' %}">Back to Home</a>
 </body>
 </html>

@@ -1,57 +1,29 @@
-
-
+<!-- officer_home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Officer Home</title>
 </head>
 <body>
-    <h1>Welcome, {{ request.session.cs }}</h1>
-    <p>Here are the elections:</p>
+    <h1>Welcome, {{ request.session.cs }}!</h1>
+    <h2>Created Elections:</h2>
 
-    <!-- Display all elections -->
-    <table>
-        <thead>
-            <tr>
-                <th>Election Name</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    {% if elections %}
+        <ul>
             {% for election in elections %}
-                <tr>
-                    <td>{{ election.name }}</td>
-                    <td>{{ election.description }}</td>
-                    <td>{{ election.status }}</td>
-                    <td>{{ election.start_time }}</td>
-                    <td>{{ election.end_time }}</td>
-                    <td>
-                        <a href="{% url 'election_detail' election.id %}">View Details</a>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="6">No elections found.</td>
-                </tr>
+                <li>
+                    <a href="{% url 'election_detail' election_id=election.id %}">
+                        Election #{{ election.election_no }} - {{ election.name }}
+                    </a>
+                </li>
             {% endfor %}
-        </tbody>
-    </table>
+        </ul>
+    {% else %}
+        <p>No elections created yet.</p>
+    {% endif %}
 
-    <!-- Button to create a new election -->
-    <a href="{% url 'create_election' %}">
-        <button>Create New Election</button>
-    </a>
-
-    <!-- Logout button -->
-    <a href="{% url 'logout' %}">
-        <button>Logout</button>
-    </a>
-
+    <br>
+    <a href="{% url 'create_election' %}">Create a new election</a>
 </body>
 </html>
