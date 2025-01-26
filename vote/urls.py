@@ -22,6 +22,11 @@ urlpatterns = [
    path('create_election/',views.create_election,name='create_election'),
    path('election_list/',views.election_list,name='election_list'),
    path('delete_election/<int:election_id>/', views.delete_election, name='delete_election'),
+    path('election/<int:id>/', views.election_detail, name='election_detail'),
+    
+    path('election/<int:election_id>/', views.election_detail, name='election_detail'),
+    # If you also have an edit page, you can define it separately:
+    path('election/<int:election_id>/edit/', views.edit_election, name='edit_election'),
    
     path('create_election/', views.create_election, name='create_election'),
     path('create_candidate/<int:election_id>/', views.create_candidate, name='create_candidate'),
@@ -33,7 +38,6 @@ urlpatterns = [
     
     path('election/<int:election_id>/edit/', views.edit_election, name='edit_election'),
     
-    path('election/<int:id>/', views.election_detail, name='election_detail'),
     
     
     
