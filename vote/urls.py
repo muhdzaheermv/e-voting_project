@@ -10,6 +10,10 @@ urlpatterns = [
    path('register/',views.register,name='register'), 
    path('login/',views.login,name='login'),
    
+   path('available_elections/', views.available_elections, name='available_elections'),
+    path('vote/<int:election_id>/', views.vote, name='vote'),
+    path('logout/', views.logout, name='logout'),
+   
    path('officer_register/',views.officer_register,name='officer_register'),
    path('officer_login/',views.officer_login,name='officer_login'),
    path('officer_home/',views.officer_home,name='officer_home'),
@@ -29,7 +33,8 @@ urlpatterns = [
     
     path('election/<int:election_id>/edit/', views.edit_election, name='edit_election'),
     
-    path('election/<int:id>/', views.election_details, name='election_details'),
+    path('election/<int:id>/', views.election_detail, name='election_detail'),
+    
    
 
    

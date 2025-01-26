@@ -1,0 +1,22 @@
+<h1>Vote for {{ election.name }}</h1>
+<p>{{ election.description }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <ul>
+        {% for candidate in candidates %}
+            <li>
+                <input type="radio" name="candidate_id" value="{{ candidate.id }}" id="candidate-{{ candidate.id }}">
+                <label for="candidate-{{ candidate.id }}">
+                    <img src="{{ candidate.profile_picture.url }}" alt="{{ candidate.name }}" width="50">
+                    {{ candidate.name }} - {{ candidate.subname }}
+                </label>
+            </li>
+        {% endfor %}
+    </ul>
+    <button type="submit" class="btn btn-primary">Cast Vote</button>
+</form>
+
+{% if message %}
+    <p class="error">{{ message }}</p>
+{% endif %}

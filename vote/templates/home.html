@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voter</title>
-</head>
-<body>
-    
-</body>
-</html>
+<h1>Welcome, {{ request.session.cs }}</h1>
+<a href="{% url 'available_elections' %}" class="btn btn-primary">Vote in Elections</a>
+<a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>

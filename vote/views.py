@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from . models import VoterReg,ElectionOfficerReg,Election,Candidate
+from . models import VoterReg,ElectionOfficerReg,Election,Candidate,Vote
 from datetime import datetime
 
 # Create your views here.
@@ -18,7 +18,7 @@ def register(request):
       email = request.POST.get('remail')
       uname = request.POST.get('runame')
       passw = request.POST.get('rpass')
-      reg(fullname=fname,contact=phone,email=email,username=uname,password=passw).save()
+      VoterReg(fullname=fname,contact=phone,email=email,username=uname,password=passw).save()
       return render(request,'login.html')
    else:
       return render(request,'register.html')
@@ -27,9 +27,9 @@ def login(request):
    if request.method=='POST':
       uname = request.POST.get('runame')
       passw = request.POST.get('rpass')
-      cr = reg.objects.filter(username=uname,password=passw)
+      cr = VoterReg.objects.filter(username=uname,password=passw)
       if cr:
-         details = reg.objects.get(username=uname, password = passw)
+         details = VoterReg.objects.get(username=uname, password = passw)
          username = details.username
          request.session['cs']=username
 
@@ -141,16 +141,16 @@ def delete_election(request, election_id):
     except Election.DoesNotExist:
         return render(request, 'officer_home.html', {'message': 'Election not found!'})
     
-def election_details(request, election_id):
-    # Get the election based on the election_id
-    election = get_object_or_404(Election, id=election_id)
-    
-    # Optionally, get all candidates associated with this election
+def election_detail(request, id):
+    # Fetch the election by ID
+    election = Election.objects.get(election_no=id)
+
+    # Fetch associated candidates
     candidates = Candidate.objects.filter(election=election)
-    
+
     return render(request, 'election_detail.html', {
         'election': election,
-        'candidates': candidates,
+        'candidates': candidates
     })
     
 
@@ -194,6 +194,69 @@ def view_candidates(request, election_id):
         'election': election,
         'candidates': candidates,
     })
+
+def available_elections(request):
+    # Ensure the voter is logged in
+    voter_username = request.session.get('cs')
+    if not voter_username:
+        return redirect('login')
+
+    # Get the voter
+    voter = VoterReg.objects.get(username=voter_username)
+    
+    # Exclude elections where the voter has already voted
+    voted_elections = Vote.objects.filter(voter=voter).values_list('election', flat=True)
+    elections = Election.objects.exclude(id__in=voted_elections)
+
+    return render(request, 'available_elections.html', {'elections': elections})
+
+def vote(request, election_id):
+    # Ensure the voter is logged in
+    voter_username = request.session.get('cs')
+    if not voter_username:
+        return redirect('login')
+
+    # Get the voter and election
+    voter = get_object_or_404(VoterReg, username=voter_username)
+    election = get_object_or_404(Election, id=election_id)
+    candidates = Candidate.objects.filter(election=election)
+
+    if request.method == 'POST':
+        candidate_id = request.POST.get('candidate_id')
+
+        try:
+            # Ensure the candidate exists and belongs to the given election
+            candidate = candidates.get(id=candidate_id)
+
+            # Check if the voter has already voted in this election
+            if not Vote.objects.filter(voter=voter, election=election).exists():
+                # Save the vote
+                Vote(voter=voter, election=election, candidate=candidate).save()
+                return render(request, 'home.html', {'message': 'Vote cast successfully!'})
+
+            return render(request, 'vote.html', {
+                'election': election,
+                'candidates': candidates,
+                'message': 'You have already voted in this election.'
+            })
+
+        except Candidate.DoesNotExist:
+            # If the candidate does not exist, show an error message
+            return render(request, 'vote.html', {
+                'election': election,
+                'candidates': candidates,
+                'message': 'Invalid candidate selection. Please try again.'
+            })
+
+    return render(request, 'vote.html', {'election': election, 'candidates': candidates})
+
+
+
+def logout(request):
+    request.session.flush()  # Clear all session data
+    return redirect('login')
+
+
 
 
     
