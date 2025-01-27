@@ -1,0 +1,3 @@
+<h1>Welcome, {{ request.session.cs }}</h1>
+<a href="{% url 'available_elections' %}" class="btn btn-primary">Vote in Elections</a>
+<a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>

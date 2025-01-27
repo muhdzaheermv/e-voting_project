@@ -1,0 +1,12 @@
+<h1>Available Elections</h1>
+{% if elections %}
+    {% for election in elections %}
+        <div class="election-item">
+            <h3>{{ election.name }}</h3>
+            <p>{{ election.description }}</p>
+            <a href="{% url 'vote' election.id %}" class="btn btn-primary">Vote Now</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No elections available to vote on.</p>
+{% endif %}

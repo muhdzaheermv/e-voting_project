@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vote</title>
+</head>
+<body>
+    <h1>Vote in Election: {{ election.name }}</h1>
+
+    {% if message %}
+    <p style="color: red;">{{ message }}</p>
+    {% endif %}
+
+    {% if candidates %}
+    <form method="post">
+        {% csrf_token %}
+        <h2>Choose a candidate:</h2>
+        {% for candidate in candidates %}
+        <div>
+            <input type="radio" name="candidate_id" value="{{ candidate.id }}" id="candidate-{{ candidate.id }}">
+            <label for="candidate-{{ candidate.id }}">{{ candidate.name }}</label>
+        </div>
+        {% endfor %}
+        <button type="submit">Submit Vote</button>
+    </form>
+    {% endif %}
+</body>
+</html>

@@ -172,7 +172,8 @@ def delete_election(request, election_id):
         # Optionally, delete related candidates
         election.candidates.all().delete()
         election.delete()
-        return render(request, 'officer_home.html', {'message': 'Election deleted successfully!'})
+        messages.success(request, 'election deleted successfully!')
+        return redirect('officer_home') 
     except Election.DoesNotExist:
         return render(request, 'officer_home.html', {'message': 'Election not found!'})
     
