@@ -141,7 +141,8 @@ def create_candidate(request, election_id):
         subname = request.POST.get('rsubname')
 
         Candidate(election=election, name=name, profile_picture=profile_picture, description=description, subname=subname).save()
-        return render(request, 'officer_home.html', {'message': 'Candidate created successfully!'})
+        messages.success(request, 'Candidate created successfully!')
+        return redirect('officer_home') 
     else:
         return render(request, 'create_candidate.html', {'election': election})
     
@@ -154,14 +155,16 @@ def edit_candidate(request, candidate_id):
         candidate.description = request.POST.get('rdescription')
         candidate.subname = request.POST.get('rsubname')
         candidate.save()
-        return render(request, 'officer_home.html', {'message': 'Candidate updated successfully!'})
+        messages.success(request, 'Candidate updated successfully!')
+        return redirect('officer_home') 
     else:
         return render(request, 'edit_candidate.html', {'candidate': candidate})
 
 def delete_candidate(request, candidate_id):
     candidate = Candidate.objects.get(id=candidate_id)  # Retrieve the candidate
     candidate.delete()
-    return render(request, 'officer_home.html', {'message': 'Candidate deleted successfully!'})
+    messages.success(request, 'Candidate deleted successfully!')
+    return redirect('officer_home') 
 
 def delete_election(request, election_id):
     try:
