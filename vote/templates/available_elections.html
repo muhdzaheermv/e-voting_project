@@ -102,7 +102,7 @@
                                     <div class="page">
                                         <div class="photobox photobox_triangular photobox_scale-rotated">
                                             <div class="photobox__previewbox media-placeholder">
-                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static 'images/officer.png' %} alt="Profile Picture" alt="">
+                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static 'images/votereg.png' %} alt="Profile Picture" alt="">
                                             </div>
                                             <div class="photobox__info-wrapper">
                                                 <div class="photobox__info"><span>#{{ election.election_no }}</span></div>
@@ -132,6 +132,57 @@
             </div>
         </div>
     </section>
+    
+    <section class="w3l-img-grids" id="gridsimg">
+        <div class="blog py-5" id="classes">
+            <div class="container py-lg-5">
+                <h1 class="mb-4">Voting History</h1>
+                <div class="row align-items-center">
+                    {% if participated_elections %}
+                    {% for election in participated_elections %}
+                    <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
+                        <div class="w3img-grids-info">
+                            <div class="w3img-grids-info-gd position-relative">
+                                    <div class="page">
+                                        <div class="photobox photobox_triangular photobox_scale-rotated">
+                                            <div class="photobox__previewbox media-placeholder">
+                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static 'images/officer.png' %} alt="Profile Picture" alt="">
+                                            </div>
+                                            <div class="photobox__info-wrapper">
+                                                <div class="photobox__info"><span>#{{ election.election_no }}</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="w3img-grids-info-gd-content mt-4">
+                                        <h4 class="mb-2">
+                                            {{ election.name }}</h4>
+                                    <p class="">{{ election.description }}</p>
+                                    <p class="">{{ election.start_time }}</p>
+                                    <p class="">{{ election.end_time }}</p>
+                                    <p class="">{{ election.status }}</p>
+                                    <p>You have already voted in this election.</p>
+                                    <a href="{% url 'vote' election.id %}" class="btn btn-primary">Vote Now</a>
+                                    <a href="{% url 'election_result' election.id %}" class="btn btn-primary">Check Result</a>
+                                    
+
+
+                                    
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <p>You have not participated in any elections yet.</p>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
     
     <!--//img-grids->
    

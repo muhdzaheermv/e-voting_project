@@ -3,43 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Election List</title>
 </head>
 <body>
-    
-    {% for i in data %}
+    <h1>Available Elections</h1>
 
-    <h1>election name : {{i.name}}</h1>
-    <P>{{i.election_no}}</P>
-    <P>{{i.starttime}}</P>
-    <P>{{i.endtime}}</P>
-    <P>{{i.description}}</P>
-    <P>{{i.status}}</P>
-        
-    {% endfor %}
-
-    {% for i in d %}
-
-    <h1>election name : {{i.name}}</h1>
-    <P>{{i.description}}</P>
-    <P>{{i.subname}}</P>
-    <P>{{i.election}}</P>
-        
-    {% endfor %}
-
-    {% for candidate in candidates %}
-        <div>
-            <h3>{{ candidate.name }}</h3>
-            <p>{{ candidate.description }}</p>
-            <a href="{% url 'edit_candidate' candidate_id=candidate.id %}">Edit</a>
-            <a href="{% url 'delete_candidate' candidate_id=candidate.id %}">Delete</a>
-        </div>
+    {% if elections %}
+        {% for election in elections %}
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                <h2>{{ election.name }}</h2>
+                <p><strong>Election No:</strong> {{ election.election_no }}</p>
+                <p><strong>Description:</strong> {{ election.description }}</p>
+                <p><strong>Start Time:</strong> {{ election.start_time }}</p>
+                <p><strong>End Time:</strong> {{ election.end_time }}</p>
+                <p><strong>Status:</strong> {{ election.status }}</p>
+                
+                {% if election.status == "Available" %}
+                    <a href="{% url 'vote' election.id %}">
+                        <button style="background-color: green; color: white; padding: 5px 10px; border: none; cursor: pointer;">Vote</button>
+                    </a>
+                {% else %}
+                    <button style="background-color: gray; color: white; padding: 5px 10px; border: none;" disabled>Voting Closed</button>
+                {% endif %}
+            </div>
         {% endfor %}
-
-    {% for election in election %}
-    <p>{{ election.name }}</p>
-    <a href="{% url 'create_candidate' election_id=election.id %}">Create Candidate</a>
-    {% endfor %}
-        
+    {% else %}
+        <p>No elections available at the moment.</p>
+    {% endif %}
 </body>
 </html>

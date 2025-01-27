@@ -227,17 +227,11 @@ def view_candidates(request, election_id):
     })
 
 def available_elections(request):
-    # Ensure the voter is logged in
     voter_username = request.session.get('cs')
     if not voter_username:
         return redirect('login')
 
-    # Get the voter
-    voter = VoterReg.objects.get(username=voter_username)
-    
-    # Exclude elections where the voter has already voted
-    voted_elections = Vote.objects.filter(voter=voter).values_list('election', flat=True)
-    elections = Election.objects.exclude(id__in=voted_elections)
+    elections = Election.objects.all()  # Fetch all elections
 
     return render(request, 'available_elections.html', {'elections': elections})
 
