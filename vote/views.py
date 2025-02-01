@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from . models import VoterReg,ElectionOfficerReg,Election,Candidate,Vote,EligibleVoter,ElectionManager
+from . models import VoterReg,ElectionOfficerReg,Election,Candidate,Vote,EligibleVoter,ElectionManager,PresidingOfficer
 from django.contrib import messages
 from django.http import HttpResponse
 from datetime import datetime
@@ -460,6 +460,62 @@ def manager_dashboard(request):
 
     manager = ElectionManager.objects.get(id=request.session['manager_id'])
     return render(request, 'manager_dashboard.html', {'manager': manager})
+
+def register_presiding_officer(request):
+    if request.method == 'POST':
+        officer_id = request.POST['officer_id']
+        fullname = request.POST['fullname']
+        username = request.POST['username']
+        phone_number = request.POST['phone_number']
+        email = request.POST['email']
+        password = request.POST['password']  # Storing as plain text (not secure, but per requirement)
+
+        # Check for duplicate officer ID, username, or email
+        if PresidingOfficer.objects.filter(officer_id=officer_id).exists():
+            return HttpResponse("Officer ID already taken.")
+        if PresidingOfficer.objects.filter(username=username).exists():
+            return HttpResponse("Username already taken.")
+        if PresidingOfficer.objects.filter(email=email).exists():
+            return HttpResponse("Email already in use.")
+
+        # Create Presiding Officer
+        officer = PresidingOfficer.objects.create(
+            officer_id=officer_id,
+            fullname=fullname,
+            username=username,
+            phone_number=phone_number,
+            email=email,
+            password=password
+        )
+
+        # Redirect to login after successful registration
+        return redirect('officer_home')
+
+    return render(request, 'register_presiding_officer.html')  # Show registration form
+
+
+# ✅ Login Presiding Officer
+def login_presiding_officer(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        try:
+            officer = PresidingOfficer.objects.get(username=username, password=password)
+            request.session['officer_id'] = officer.id  # Start session
+            return redirect('presiding_officer_dashboard')
+        except PresidingOfficer.DoesNotExist:
+            return HttpResponse("Invalid login credentials")
+
+    return render(request, 'login_presiding_officer.html')
+
+
+def presiding_officer_dashboard(request):
+    if 'officer_id' not in request.session:
+        return redirect('login_presiding_officer')  # Redirect if not logged in
+
+    officer = PresidingOfficer.objects.get(id=request.session['officer_id'])
+    return render(request, 'presiding_officer_dashboard.html', {'officer': officer})
 
 
 

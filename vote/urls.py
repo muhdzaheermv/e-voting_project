@@ -65,6 +65,10 @@ urlpatterns = [
     path('manager/login/', views.login_manager, name='login_manager'),
     path('manager/dashboard/', views.manager_dashboard, name='manager_dashboard'),
     
+    path('presiding_officer/register/', views.register_presiding_officer, name='register_presiding_officer'),
+    path('presiding_officer/login/', views.login_presiding_officer, name='login_presiding_officer'),
+    path('presiding_officer/dashboard/', views.presiding_officer_dashboard, name='presiding_officer_dashboard'),
+    
     
      
      

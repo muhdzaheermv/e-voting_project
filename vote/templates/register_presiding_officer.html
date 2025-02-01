@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Presiding Officer</title>
+</head>
+<body>
+    <h2>Create Presiding Officer</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Officer ID:</label>
+        <input type="text" name="officer_id" required><br>
+
+        <label>Full Name:</label>
+        <input type="text" name="fullname" required><br>
+
+        <label>Username:</label>
+        <input type="text" name="username" required><br>
+
+        <label>Phone Number:</label>
+        <input type="text" name="phone_number" required><br>
+
+        <label>Email:</label>
+        <input type="email" name="email" required><br>
+
+        <label>Password:</label>
+        <input type="password" name="password" required><br>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <!-- <p>Already have an account? <a href="{% url 'login_presiding_officer' %}">Login here</a></p> -->
+</body>
+</html>

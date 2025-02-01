@@ -61,6 +61,17 @@ class ElectionManager(models.Model):
 
     def __str__(self):
         return self.fullname
+    
+class PresidingOfficer(models.Model):
+    officer_id = models.CharField(max_length=20, unique=True)  # Unique Officer ID
+    fullname = models.CharField(max_length=100)
+    username = models.CharField(max_length=50, unique=True)
+    phone_number = models.CharField(max_length=15, unique=True)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=100)  # Store password as plain text (not recommended for production)
+
+    def __str__(self):
+        return self.fullname
 
 
 
