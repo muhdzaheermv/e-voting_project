@@ -59,7 +59,11 @@ urlpatterns = [
     
     path('eligible_voter_list/<int:election_id>/', views.eligible_voter_list, name='eligible_voter_list'),
     
-    path('election/<int:election_id>/eligible_voters/', views.eligible_voter_list, name='eligible_voters')
+    path('election/<int:election_id>/eligible_voters/', views.eligible_voter_list, name='eligible_voters'),
+    
+    path('manager/register/', views.register_manager, name='register_manager'),
+    path('manager/login/', views.login_manager, name='login_manager'),
+    path('manager/dashboard/', views.manager_dashboard, name='manager_dashboard'),
     
     
      

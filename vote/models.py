@@ -51,6 +51,16 @@ class EligibleVoter(models.Model):
 
     def __str__(self):
         return f'{self.phone_number} - {self.election.name}'
+    
+class ElectionManager(models.Model):
+    fullname = models.CharField(max_length=100)
+    username = models.CharField(max_length=50, unique=True)
+    phone_number = models.CharField(max_length=15, unique=True)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=100)  # Store hashed password manually if needed
+
+    def __str__(self):
+        return self.fullname
 
 
 

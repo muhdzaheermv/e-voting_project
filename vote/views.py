@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from . models import VoterReg,ElectionOfficerReg,Election,Candidate,Vote,EligibleVoter
+from . models import VoterReg,ElectionOfficerReg,Election,Candidate,Vote,EligibleVoter,ElectionManager
 from django.contrib import messages
+from django.http import HttpResponse
 from datetime import datetime
 
 # Create your views here.
@@ -63,7 +64,7 @@ def officer_register(request):
       uname = request.POST.get('runame')
       passw = request.POST.get('rpass')
       ElectionOfficerReg(id_no=idno,fullname=fname,contact=phone,email=email,address=address,username=uname,password=passw).save()
-      return render(request,'officer_login.html')
+      return render(request,'manager_dashboard.html')
    else:
       return render(request,'officer_register.html')
 
@@ -407,6 +408,58 @@ def officer_home(request):
 
     return render(request, 'officer_home.html', {'elections': elections})
 
+def register_manager(request):
+    if request.method == 'POST':
+        fullname = request.POST['fullname']
+        username = request.POST['username']
+        phone_number = request.POST['phone_number']
+        email = request.POST['email']
+        password = request.POST['password']  # Normally, this should be hashed
+
+        # Ensure username and email are unique
+        if ElectionManager.objects.filter(username=username).exists():
+            return HttpResponse("Username already taken.")
+        if ElectionManager.objects.filter(email=email).exists():
+            return HttpResponse("Email already in use.")
+
+        # Create Election Manager
+        ElectionManager.objects.create(
+            fullname=fullname,
+            username=username,
+            phone_number=phone_number,
+            email=email,
+            password=password  # Storing password as plain text (not recommended for real-world applications)
+        )
+
+        return redirect('login_manager')  # Redirect to login page after successful registration
+
+    return render(request, 'register_manager.html')  # Show registration form
+
+
+# Login Election Manager
+def login_manager(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        # Check if user exists
+        try:
+            manager = ElectionManager.objects.get(username=username, password=password)
+            request.session['manager_id'] = manager.id  # Save session
+            return redirect('manager_dashboard')
+        except ElectionManager.DoesNotExist:
+            return HttpResponse("Invalid login credentials")
+
+    return render(request, 'login_manager.html')
+
+
+# Election Manager Dashboard (Only accessible after login)
+def manager_dashboard(request):
+    if 'manager_id' not in request.session:
+        return redirect('login_manager')  # Redirect if not logged in
+
+    manager = ElectionManager.objects.get(id=request.session['manager_id'])
+    return render(request, 'manager_dashboard.html', {'manager': manager})
 
 
 
