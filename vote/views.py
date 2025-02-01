@@ -493,8 +493,6 @@ def register_presiding_officer(request):
 
     return render(request, 'register_presiding_officer.html')  # Show registration form
 
-
-# ✅ Login Presiding Officer
 def login_presiding_officer(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -510,20 +508,56 @@ def login_presiding_officer(request):
     return render(request, 'login_presiding_officer.html')
 
 
+
+
 def presiding_officer_dashboard(request):
     if 'officer_id' not in request.session:
         return redirect('login_presiding_officer')  # Redirect if not logged in
 
     officer = PresidingOfficer.objects.get(id=request.session['officer_id'])
-    return render(request, 'presiding_officer_dashboard.html', {'officer': officer})
 
+    # Get all voters to display in the dashboard
+    voters = VoterReg.objects.all()
 
+    if request.method == 'POST':
+        # Verify or deny voter based on their ID
+        voter_id = request.POST.get('voter_id')
+        action = request.POST.get('action')
 
+        try:
+            voter = VoterReg.objects.get(id=voter_id)
+            if action == 'verify':
+                voter.verified = True
+                voter.save()
+            elif action == 'deny':
+                voter.verified = False
+                voter.save()
 
+            return redirect('presiding_officer_dashboard')  # Refresh the page
 
+        except VoterReg.DoesNotExist:
+            return HttpResponse("Voter not found")
 
+    return render(request, 'presiding_officer_dashboard.html', {'officer': officer, 'voters': voters})
 
-
-
+def voter_verify(request):
     
+    voter_username = request.session.get('cs')
+    if not voter_username:
+        return redirect('login')
 
+    elections = Election.objects.all()
+    
+    voter_verified = None
+    if request.method == 'POST':
+        voter_input = request.POST['voter_input']
+
+        try:
+            # Try finding the voter by username or email
+            voter = VoterReg.objects.get(username=voter_input) or VoterReg.objects.get(email=voter_input)
+            voter_verified = voter.verified  # Store verification status
+
+        except VoterReg.DoesNotExist:
+            voter_verified = False  # If no such voter found
+
+    return render(request, 'voter_verify.html', {'voter_verified': voter_verified,'elections': elections})

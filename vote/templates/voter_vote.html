@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voter Voting Page</title>
+</head>
+<body>
+    <h2>Hello, {{ voter.fullname }}!</h2>
+    <p>{{ message }}</p>
+
+    {% if voter.is_verified %}
+        <button>Vote Now</button>
+    {% else %}
+        <button disabled>Vote Now (Not Verified)</button>
+    {% endif %}
+</body>
+</html>

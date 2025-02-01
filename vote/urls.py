@@ -69,6 +69,7 @@ urlpatterns = [
     path('presiding_officer/login/', views.login_presiding_officer, name='login_presiding_officer'),
     path('presiding_officer/dashboard/', views.presiding_officer_dashboard, name='presiding_officer_dashboard'),
     
+    path('voter/verify/', views.voter_verify, name='voter_verify'),
     
      
      

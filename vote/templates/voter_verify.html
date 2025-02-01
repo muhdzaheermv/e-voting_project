@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voter Verification</title>
+</head>
+<body>
+    <h2>Verify Your Voting Status</h2>
+
+    <!-- Form to verify voter status -->
+    <form method="POST">
+        {% csrf_token %}
+        <label>Enter Your Username or Email:</label>
+        <input type="text" name="voter_input" required><br>
+        <button type="submit">Check Verify</button>
+    </form>
+
+    {% if voter_verified is not None %}
+        {% if voter_verified %}
+            <p style="color: green;">You are verified to vote!</p>
+            {% for election in elections %}
+            <a href="{% url 'vote' election.id %}" class="btn btn-primary"> <button>Vote Now</button> </a>
+            {% endfor %}
+        {% else %}
+            <p style="color: red;">You cannot vote. The presiding officer has not verified you.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

@@ -8,6 +8,52 @@
     <h2>Welcome, {{ officer.fullname }}!</h2>
     <p>You are logged in as a Presiding Officer.</p>
 
+    <h3>Voter Verification</h3>
+
+    <!-- Voter List Table -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Verified</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for voter in voters %}
+            <tr>
+                <td>{{ voter.fullname }}</td>
+                <td>{{ voter.contact }}</td>
+                <td>{{ voter.email }}</td>
+                <td>{{ voter.username }}</td>
+                <td>
+                    {% if voter.verified %}
+                        <span style="color: green;">Verified</span>
+                    {% else %}
+                        <span style="color: red;">Not Verified</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="voter_id" value="{{ voter.id }}">
+                        {% if not voter.verified %}
+                            <button type="submit" name="action" value="verify">Verify</button>
+                        {% else %}
+                            <button type="submit" name="action" value="deny">Deny</button>
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'index' %}">
+        <button>Logout</button>
     </a>
 </body>
 </html>

@@ -2,11 +2,15 @@ from django.db import models
 choice=(('Not Available','Not Available'),('Available','Available'))
 
 class VoterReg(models.Model):
-    fullname=models.CharField(max_length=20)
-    contact=models.IntegerField()
-    email=models.EmailField()
-    username=models.CharField(max_length=20)
-    password=models.CharField(max_length=20)
+    fullname = models.CharField(max_length=100)
+    contact = models.IntegerField()
+    email = models.EmailField()
+    username = models.CharField(max_length=20, unique=True)
+    password = models.CharField(max_length=20)
+    verified = models.BooleanField(default=False)  # Field to track verification status
+
+    def __str__(self):
+        return self.fullname
     
 class ElectionOfficerReg(models.Model):
     id_no=models.IntegerField()
