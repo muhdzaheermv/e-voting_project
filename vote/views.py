@@ -456,10 +456,13 @@ def login_manager(request):
 # Election Manager Dashboard (Only accessible after login)
 def manager_dashboard(request):
     if 'manager_id' not in request.session:
-        return redirect('login_manager')  # Redirect if not logged in
+        return redirect('login_election_manager')  # Redirect if not logged in
 
-    manager = ElectionManager.objects.get(id=request.session['manager_id'])
-    return render(request, 'manager_dashboard.html', {'manager': manager})
+    # Fetch all Election Officers
+    officers = ElectionOfficerReg.objects.all()
+
+    return render(request, 'manager_dashboard.html', {'officers': officers})
+
 
 def register_presiding_officer(request):
     if request.method == 'POST':

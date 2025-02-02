@@ -5,15 +5,42 @@
     <title>Election Manager Dashboard</title>
 </head>
 <body>
-    <h2>Welcome, {{ manager.fullname }}!</h2>
-    <p>You are logged in as an Election Manager.</p>
-
+    <h2>Welcome, Election Manager</h2>
+    <p>You are logged in as the Election Manager.</p>
     <a href="{% url 'officer_register' %}">
         <button>Create Election Officer</button>
     </a>
 
-    
-       
+    <h3>List of Election Officers</h3>
+
+    <!-- Table to Display Election Officers -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>ID Number</th>
+                <th>Username</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for officer in officers %}
+            <tr>
+                <td>{{ officer.fullname }}</td>
+                <td>{{ officer.id_no }}</td>
+                <td>{{ officer.username }}</td>
+                <td>{{ officer.contact }}</td>
+                <td>{{ officer.email }}</td>
+                <td>{{ officer.address }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'index' %}">
+        <button>Logout</button>
     </a>
 </body>
 </html>
