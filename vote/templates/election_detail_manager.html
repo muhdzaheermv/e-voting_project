@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Votesphere</title>
+    <title>Votesphere manager</title>
     <!--/google-fonts -->
     <link href="//fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
     <!--//google-fonts -->
@@ -46,7 +46,7 @@
                     <ul class="navbar-nav search-right mt-lg-0 mt-2">
                         <li class="nav-item" title="Search"><a href="#search" class="search-search">
                                 <span class="fas fa-search" aria-hidden="true"></span></a></li>
-                        <li class="nav-item me-lg-3"><a href={% url 'index' %} class="phone-btn btn btn-primary btn-style d-none d-lg-block btn-style ms-2">Logout</a></li>
+                        <li class="nav-item me-lg-3"><a href="/" class="phone-btn btn btn-primary btn-style d-none d-lg-block btn-style ms-2">Logout</a></li>
                     </ul>
 
                     <!-- //toggle switch for light and dark theme -->
@@ -87,13 +87,15 @@
         <div class="container">
             <div class="row align-items-center w3l-slider-grids">
                 <div class="col-lg-6 w3l-slider-left-info pe-lg-5">
-                    <h6 class="title-subhny mb-2">Welcome {{ request.session.cs }}!</h6>
-                    <h3 class="mb-2 title"> <span>For</span> Your </h3>
-                    <h3 class="mb-4 title">Election Management</h3>
-                    <p class="w3banr-p">Empowering election officers with secure, efficient, and transparent tools for managing elections. Together, we’re transforming the way elections are conducted.</p>
+                    <h6 class="title-subhny mb-2">Election status : {{ election.status }}</h6>
+                    <h3 class="mb-2 title"> <span>Manage </span>Election</h3>
+                    <h3 class="mb-4 title">{{ election.name }}</h3>
+                    <p class="w3banr-p">Start Time : {{ election.start_time }}</p>
+                    <p class="w3banr-p">End Time : {{ election.end_time }}</p><br>
+                    <p class="w3banr-p">{{ election.description }}</p>
                     <div class="w3l-buttons mt-sm-5 mt-4">
-                        <a class="btn btn-primary btn-style me-2" href={% url 'create_election' %}>Create Election </a>
-                        <a class="btn btn-outline-primary btn-style " href={% url 'manager_dashboard' %}>Refresh Elections </a><br>
+                        <a class="btn btn-primary btn-style me-2" href={% url 'edit_election' election.id %}>Edit </a>
+                        <a class="btn btn-outline-primary btn-style "  onclick="return confirm('Are you sure you want to delete this election?')" href={% url 'delete_election' election.id %}> Delete Election </a>
                     </div>
                 </div>
                 <div class="col-lg-6 w3l-slider-right-info mt-lg-0 mt-5 ps-lg-5 align-items-center">
@@ -101,7 +103,7 @@
 
                                 <div class="slider-info">
                                     <div class="">
-                                        <img src={% static "images/eo.png"  %} alt="" class="radius-image img-fluid">
+                                        <img src={% static "images/votemanage.png"  %} alt="" class="radius-image img-fluid">
                                     </div>
                                 </div>
                             
@@ -112,223 +114,56 @@
     </section>
     <!-- /main-slider -->
     
-    <!--//grids-->
-    <!--/circles-section-->
-   
+    
     <!--//circles-section-->
     <!--/img-grids-->
+    
     <section class="w3l-img-grids" id="gridsimg">
         <div class="blog py-5" id="classes">
             <div class="container py-lg-5">
                 <div class="row align-items-center">
-                    {% if elections %}
-                    {% for election in elections %}
+                    
                     <div class="col-lg-4 col-md-6 item mt-lg-0 mt-5">
                         <div class="w3img-grids-info">
                             <div class="w3img-grids-info-gd position-relative">
-                                <a href="{% url 'election_detail_manager' election_id=election.id %}">
+                                <a href="{% url 'election_result' election.id %}">
                                     <div class="page">
                                         <div class="photobox photobox_triangular photobox_scale-rotated">
                                             <div class="photobox__previewbox media-placeholder">
-                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static "images/votemanage.png"  %} alt="">
+                                                <img class="img-fluid photobox__preview media-placeholder__media radius-image" src={% static "images/result.png"  %} alt="">
                                             </div>
                                             <div class="photobox__info-wrapper">
-                                                <div class="photobox__info"><span>#{{ election.election_no }}</span></div>
+                                                <div class="photobox__info"><span>election_result</span></div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </a>
                                 <div class="w3img-grids-info-gd-content mt-4">
                                     <a href="#gridsimg" class="titile-img d-block">
                                         <h4 class="mb-2">
-                                            {{ election.name }}</h4>
+                                            election_result</h4>
                                     </a>
-                                    <p class="">{{ election.description }}</p>
+                                    <p class=""></p>
 
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                    {% endfor %}
-                {% else %}
-                    <p>No elections created yet.</p>
-                 {% endif %}
-                    
-                    
                 </div>
             </div>
         </div>
     </section>
+    
     <!--//img-grids->
    
     <!--/video-section-->
-    <section class="w3l-video" id="video">
-        <div class="video-mid-w3 py-5">
-            <div class="container py-md-5 py-3">
-                <!--/row-1-->
-                <div class="row">
-                    <div class="col-lg-6 mt-lg-0 mb-5 align-self pe-lg-3">
-                        <div class="title-content text-left">
-                            <h6 class="title-subhny mb-2">Time to grow</h6>
-                            <h3 class="title-w3l two">Make better ideas happen fast
-                            </h3>
-                        </div>
-                        <p class="mt-md-4 mt-3">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam</p>
-                        <div class="w3l-two-buttons">
-                            <a href="about.html" class="btn btn-style btn-primary mt-lg-5 mt-4">Read More </a>
-                            <a href="#view" class="btn btn-style btn-white mt-lg-5 mt-4 ms-2"> Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 videow3-right ps-lg-5">
-                        <div class="w3l-index5 py-5">
-                            <div class="history-info align-self text-center py-5 my-lg-5">
-                                <div class="position-relative py-5">
-                                    <a href="#small-dialog1" class="popup-with-zoom-anim play-view text-center position-absolute">
-                                        <span class="video-play-icon">
-                                            <span class="fa fa-play"></span>
-                                        </span>
-                                    </a>
-                                    <!-- dialog itself, mfp-hide class is required to make dialog hidden --
-                                    <div id="small-dialog1" class="zoom-anim-dialog mfp-hide">
-                                        <iframe src="https://player.vimeo.com/video/124801644" frameborder="0" allow="autoplay; fullscreen" allowfullscreen=""></iframe>
-                                    </div>
-									  <!-- dialog itself, mfp-hide class is required to make dialog hidden -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--//row-1-->
-            </div>
-        </div>
-    </section>
+    
     <!--//video-section-->
 
     <!--/tabs-faqs-->
-    <section class="w3l-products w3l-faq-block py-5" id="projects">
-        <div class="container py-md-5 py-2">
-            <div class="header-secw3 text-center mb-5">
-                <h6 class="title-subhny mb-2">faqs</h6>
-                <h3 class="title-w3l mb-4">Ask Your Questions
-
-                </h3>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 mx-auto pe-lg-5">
-                    <div class="w3hny-business-img">
-                        <img src={% static "images/g8.jpg"  %} alt="" class="img-fluid radius-image">
-                    </div>
-
-                </div>
-                <div class="col-lg-6 mt-lg-0 mt-sm-5 mt-4">
-                    <div class="accordion">
-                        <div class="accordion-item">
-                            <button id="accordion-button-1" aria-expanded="true"><span class="accordion-title">How much does
-                                    a static website cost?</span><span class="icon" aria-hidden="true"></span></button>
-                            <div class="accordion-content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis
-                                    ut. Ut tortor.</p>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button id="accordion-button-2" aria-expanded="false"><span class="accordion-title">How to
-                                    choose a best web template?</span><span class="icon" aria-hidden="true"></span></button>
-                            <div class="accordion-content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis
-                                    ut. Ut pretium.</p>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button id="accordion-button-3" aria-expanded="false"><span class="accordion-title">How to download a
-                                    template?</span><span class="icon" aria-hidden="true"></span></button>
-                            <div class="accordion-content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis
-                                    ut. Ut tortor.</p>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button id="accordion-button-4" aria-expanded="false"><span class="accordion-title">Why should i choose a
-                                    free website?</span><span class="icon" aria-hidden="true"></span></button>
-                            <div class="accordion-content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis
-                                    ut. Ut potenti.</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--//tabs-faqs-->
-
-    <!-- testimonials -->
-    <section class="w3l-clients" id="clients">
-        <!-- /grids -->
-        <div class="cusrtomer-layout py-5">
-            <div class="container py-lg-5 py-md-3">
-                <!-- /grids -->
-                <div class="testimonial-width">
- 
-                        <div class="item">
-                            <div class="testimonial-content">
-                                <div class="testimonial">
-                                    <blockquote>
-                                        <i class="fas fa-quote-left"></i>
-                                        <q> Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit beatae
-                                            laudantium
-                                            voluptate rem ullam dolore nisi voluptatibus esse quasi, doloribus tempora.
-                                            Dolores molestias adipisci dolor sit amet!.
-                                            Lorem ipsum dolor sit amet.</q>
-                                    </blockquote>
-                                    <div class="testi-des">
-
-                                        <div class="peopl align-self">
-                                            <h3>John wilson</h3>
-                                            <p class="indentity">Example City</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /grids -->
-        </div>
-        <!-- //grids -->
-    </section>
-    <!-- //testimonials -->
-    <!--/w3l-project-->
-    <section class="w3l-project-main">
-        <div class="container">
-            <div class="w3l-project py-md-5 py-4">
-                <div class="row py-5 align-items-center">
-                    <div class="col-lg-6 w3l-project-right">
-                        <div class="bottom-info">
-                            <div class="header-section pr-lg-5">
-                                <h6 class="title-subhny mb-2">Stay Update!</h6>
-                                <h3 class="title-w3l">Subscribe to our newsletter
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 w3l-project-left">
-                        <form action="#" method="post" class="subscribe-wthree mt-lg-5 mt-4">
-                            <div class="flex-wrap subscribe-wthree-field">
-                                <input class="form-control" type="email" placeholder="Your Email Address" name="email" required="">
-                                <button class="btn btn-style btn-primary" type="submit">Subscribe</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    
     <!--//w3l-project-->
     <!-- footer -->
     <section class="w3l-footer-29-main">

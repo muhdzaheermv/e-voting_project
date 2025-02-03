@@ -30,7 +30,7 @@ def register(request):
       uname = request.POST.get('runame')
       passw = request.POST.get('rpass')
       VoterReg(fullname=fname,contact=phone,email=email,username=uname,password=passw).save()
-      return render(request,'login.html')
+      return render(request,'manager_dashboard.html')
    else:
       return render(request,'register.html')
   
@@ -133,6 +133,10 @@ def election_list(request):
     candidates = Candidate.objects.all()
     return render(request,'election_list.html',{"data":data,'d':d,'election':election,'candidates': candidates})
 
+def voters_list(request):
+    data=VoterReg.objects.all()
+    return render(request,'voters_list.html',{"data":data})
+
 def create_candidate(request, election_id):
     election = Election.objects.get(id=election_id)  # Retrieve the election
     if request.method == 'POST':
@@ -182,6 +186,13 @@ def election_detail(request, election_id):
     try:
         election = Election.objects.get(id=election_id)
         return render(request, 'election_detail.html', {'election': election})
+    except Election.DoesNotExist:
+        return render(request, '404.html', {'message': 'Election not found.'})
+    
+def election_detail_manager(request, election_id):
+    try:
+        election = Election.objects.get(id=election_id)
+        return render(request, 'election_detail_manager.html', {'election': election})
     except Election.DoesNotExist:
         return render(request, '404.html', {'message': 'Election not found.'})
     
@@ -408,6 +419,24 @@ def officer_home(request):
 
     return render(request, 'officer_home.html', {'elections': elections})
 
+def manager_dashboard(request):
+    if 'manager_id' not in request.session:
+        return redirect('login_election_manager') 
+    
+    officer_id = request.session.get('lcu')
+    officer = ElectionOfficerReg.objects.get(id_no=officer_id)
+
+    # Get elections created by the officer
+    elections = officer.elections.all()
+# Redirect if not logged in
+
+    # Fetch all Election Officers
+    officers = ElectionOfficerReg.objects.all()
+
+    return render(request, 'manager_dashboard.html', {'officers': officers,'elections': elections})
+
+
+
 def register_manager(request):
     if request.method == 'POST':
         fullname = request.POST['fullname']
@@ -454,14 +483,9 @@ def login_manager(request):
 
 
 # Election Manager Dashboard (Only accessible after login)
-def manager_dashboard(request):
-    if 'manager_id' not in request.session:
-        return redirect('login_election_manager')  # Redirect if not logged in
 
-    # Fetch all Election Officers
-    officers = ElectionOfficerReg.objects.all()
 
-    return render(request, 'manager_dashboard.html', {'officers': officers})
+
 
 
 def register_presiding_officer(request):
