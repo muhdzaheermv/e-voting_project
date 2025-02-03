@@ -559,8 +559,14 @@ def presiding_officer_dashboard(request):
 
     officer = PresidingOfficer.objects.get(id=request.session['officer_id'])
 
-    # Get all voters to display in the dashboard
-    voters = VoterReg.objects.all()
+    # Get search query
+    query = request.GET.get('q', '')  # Get 'q' parameter from the search form
+
+    # Filter voters based on search input
+    if query:
+        voters = VoterReg.objects.filter(fullname__icontains=query)  # Case-insensitive search
+    else:
+        voters = VoterReg.objects.all()  # Show all voters if no search query
 
     if request.method == 'POST':
         # Verify or deny voter based on their ID
@@ -581,7 +587,7 @@ def presiding_officer_dashboard(request):
         except VoterReg.DoesNotExist:
             return HttpResponse("Voter not found")
 
-    return render(request, 'presiding_officer_dashboard.html', {'officer': officer, 'voters': voters})
+    return render(request, 'presiding_officer_dashboard.html', {'officer': officer, 'voters': voters, 'query': query})
 
 def voter_verify(request):
     
