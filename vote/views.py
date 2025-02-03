@@ -30,7 +30,7 @@ def register(request):
       uname = request.POST.get('runame')
       passw = request.POST.get('rpass')
       VoterReg(fullname=fname,contact=phone,email=email,username=uname,password=passw).save()
-      return render(request,'manager_dashboard.html')
+      return render(request,'officer_home.html')
    else:
       return render(request,'register.html')
   
