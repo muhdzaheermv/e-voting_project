@@ -34,17 +34,33 @@ def register(request):
    else:
       return render(request,'register.html')
   
+# def login(request):
+#    if request.method=='POST':
+#       uname = request.POST.get('runame')
+#       passw = request.POST.get('rpass')
+#       cr = VoterReg.objects.filter(username=uname,password=passw)
+#       if cr:
+#          details = VoterReg.objects.get(username=uname, password = passw)
+#          username = details.username
+#          request.session['cs']=username
+
+#          return render(request,'home.html')
+#       else:
+#          message="Invalid Username Or Password"
+#          return render(request,'login.html',{'me':message})
+#    else: 
+#       return render(request,'login.html')
+  
 def login(request):
    if request.method=='POST':
       uname = request.POST.get('runame')
-      passw = request.POST.get('rpass')
-      cr = VoterReg.objects.filter(username=uname,password=passw)
+      cr = VoterReg.objects.filter(username=uname)
       if cr:
-         details = VoterReg.objects.get(username=uname, password = passw)
+         details = VoterReg.objects.get(username=uname)
          username = details.username
          request.session['cs']=username
 
-         return render(request,'home.html')
+         return render(request,'available_elections.html')
       else:
          message="Invalid Username Or Password"
          return render(request,'login.html',{'me':message})
