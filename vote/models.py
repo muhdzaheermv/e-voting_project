@@ -2,6 +2,8 @@ from django.db import models
 choice=(('Not Available','Not Available'),('Available','Available'))
 
 class VoterReg(models.Model):
+    voter_id = models.CharField(max_length=100)
+    profile_picture = models.ImageField(upload_to='voters/', null=True, blank=True)
     fullname = models.CharField(max_length=100)
     contact = models.IntegerField()
     email = models.EmailField()

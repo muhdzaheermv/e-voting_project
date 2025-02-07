@@ -24,12 +24,14 @@ def home(request):
 
 def register(request):
    if request.method =='POST':
+      vid = request.POST.get('rvid')
       fname = request.POST.get('rfname')
       phone = request.POST.get('rcontact')
       email = request.POST.get('remail')
+      profile_picture=request.FILES.get('rprofile_picture')
       uname = request.POST.get('runame')
       passw = request.POST.get('rpass')
-      VoterReg(fullname=fname,contact=phone,email=email,username=uname,password=passw).save()
+      VoterReg(voter_id=vid,fullname=fname,contact=phone,profile_picture=profile_picture,email=email,username=uname,password=passw).save()
       return render(request,'officer_home.html')
    else:
       return render(request,'register.html')
@@ -52,20 +54,33 @@ def register(request):
 #       return render(request,'login.html')
   
 def login(request):
-   if request.method=='POST':
-      uname = request.POST.get('runame')
-      cr = VoterReg.objects.filter(username=uname)
-      if cr:
-         details = VoterReg.objects.get(username=uname)
-         username = details.username
-         request.session['cs']=username
+    if request.method == 'POST':
+        voter_id = request.POST['voter_id']
 
-         return render(request,'available_elections.html')
-      else:
-         message="Invalid Username Or Password"
-         return render(request,'login.html',{'me':message})
-   else: 
-      return render(request,'login.html')
+        try:
+            voter = VoterReg.objects.get(voter_id=voter_id)  # Authenticate using voter_id
+            request.session['voter_id'] = voter.id  # Store voter ID in session
+            return redirect('available_elections')  # Redirect to voter dashboard
+        except VoterReg.DoesNotExist:
+            return render(request, 'login.html', {'error': 'Invalid Voter ID'})
+
+    return render(request, 'login.html')
+
+# def login(request):
+#    if request.method=='POST':
+#       vid = request.POST.get('rvid')
+#       cr = VoterReg.objects.filter(voter_id=vid)
+#       if cr:
+#          details = VoterReg.objects.get(voter_id=vid)
+#          vid = details.voter_id
+#          request.session['cs']=vid
+
+#          return render(request,'available_elections.html')
+#       else:
+#          message="Invalid Username Or Password"
+#          return render(request,'login.html',{'me':message})
+#    else: 
+#       return render(request,'login.html')
   
 
 
@@ -266,23 +281,17 @@ def available_elections(request):
 
 def vote(request, election_id):
     # Ensure the voter is logged in
-    voter_username = request.session.get('cs')
-    if not voter_username:
+    voter_id = request.session.get('cs')
+    if not voter_id:
         return redirect('login')
 
     # Get the voter and election
-    voter = get_object_or_404(VoterReg, username=voter_username)
+    voter = get_object_or_404(VoterReg, voter_id=voter_id)
     election = get_object_or_404(Election, id=election_id)
     candidates = Candidate.objects.filter(election=election)
 
     # Verify if the voter is eligible
-    eligible_voter = EligibleVoter.objects.filter(election=election, phone_number=voter.contact).first()
-    if not eligible_voter:
-        return render(request, 'vote.html', {
-            'election': election,
-            'candidates': candidates,
-            'message': 'You are not eligible to vote in this election. Please contact the election officer.'
-        })
+    
 
     # Handle vote submission
     if request.method == 'POST':
@@ -296,7 +305,7 @@ def vote(request, election_id):
             if not Vote.objects.filter(voter=voter, election=election).exists():
                 # Save the vote
                 Vote(voter=voter, election=election, candidate=candidate).save()
-                return render(request, 'home.html', {'message': 'Vote cast successfully!'})
+                return render(request, 'login.html', {'message': 'Vote cast successfully!'})
 
             return render(request, 'vote.html', {
                 'election': election,
@@ -444,9 +453,8 @@ def manager_dashboard(request):
 
     # Get elections created by the officer
     elections = officer.elections.all()
-# Redirect if not logged in
-
-    # Fetch all Election Officers
+    
+    
     officers = ElectionOfficerReg.objects.all()
 
     return render(request, 'manager_dashboard.html', {'officers': officers,'elections': elections})

@@ -141,12 +141,12 @@ button{
     </div>
     <form action="/login/" method="post">
       {% csrf_token %}
-        <h3>Voter Login</h3>
+        <h3>Register Number</h3>
 
-        <label for="username">Username</label>
-        <input type="text" name="runame" placeholder="Enter User Name">
+        <label for="username">Register number</label>
+        <input type="text" name="voter_id" placeholder="Enter Reg.No">
 
-        <button type="submit">Vote now</button>
+        <button type="submit">Submit</button>
         <div class="social">
         </div>
     </form>

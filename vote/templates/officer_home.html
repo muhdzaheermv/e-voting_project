@@ -93,7 +93,8 @@
                     <p class="w3banr-p">Empowering election officers with secure, efficient, and transparent tools for managing elections. Together, we’re transforming the way elections are conducted.</p>
                     <div class="w3l-buttons mt-sm-5 mt-4">
                         <a class="btn btn-primary btn-style me-2" href={% url 'register' %}>Add voters </a>
-                        <a class="btn btn-outline-primary btn-style " href={% url 'officer_home' %}> Refresh Election </a>
+                        <a class="btn btn-primary btn-style me-2 " href={% url 'register_presiding_officer' %}>Add Presiding officer </a>
+                        <a class="btn btn-outline-primary btn-style mt-3" href={% url 'officer_home' %}> Refresh Election </a>
                     </div>
                 </div>
                 <div class="col-lg-6 w3l-slider-right-info mt-lg-0 mt-5 ps-lg-5 align-items-center">
@@ -163,172 +164,7 @@
     <!--//img-grids->
    
     <!--/video-section-->
-    <section class="w3l-video" id="video">
-        <div class="video-mid-w3 py-5">
-            <div class="container py-md-5 py-3">
-                <!--/row-1-->
-                <div class="row">
-                    <div class="col-lg-6 mt-lg-0 mb-5 align-self pe-lg-3">
-                        <div class="title-content text-left">
-                            <h6 class="title-subhny mb-2">Time to grow</h6>
-                            <h3 class="title-w3l two">Make better ideas happen fast
-                            </h3>
-                        </div>
-                        <p class="mt-md-4 mt-3">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam</p>
-                        <div class="w3l-two-buttons">
-                            <a href="about.html" class="btn btn-style btn-primary mt-lg-5 mt-4">Read More </a>
-                            <a href="#view" class="btn btn-style btn-white mt-lg-5 mt-4 ms-2"> Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 videow3-right ps-lg-5">
-                        <div class="w3l-index5 py-5">
-                            <div class="history-info align-self text-center py-5 my-lg-5">
-                                <div class="position-relative py-5">
-                                    <a href="#small-dialog1" class="popup-with-zoom-anim play-view text-center position-absolute">
-                                        <span class="video-play-icon">
-                                            <span class="fa fa-play"></span>
-                                        </span>
-                                    </a>
-                                    <!-- dialog itself, mfp-hide class is required to make dialog hidden --
-                                    <div id="small-dialog1" class="zoom-anim-dialog mfp-hide">
-                                        <iframe src="https://player.vimeo.com/video/124801644" frameborder="0" allow="autoplay; fullscreen" allowfullscreen=""></iframe>
-                                    </div>
-									  <!-- dialog itself, mfp-hide class is required to make dialog hidden -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--//row-1-->
-            </div>
-        </div>
-    </section>
-    <!--//video-section-->
 
-    <!--/tabs-faqs-->
-    <section class="w3l-products w3l-faq-block py-5" id="projects">
-        <div class="container py-md-5 py-2">
-            <div class="header-secw3 text-center mb-5">
-                <h6 class="title-subhny mb-2">faqs</h6>
-                <h3 class="title-w3l mb-4">Ask Your Questions
-
-                </h3>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 mx-auto pe-lg-5">
-                    <div class="w3hny-business-img">
-                        <img src={% static "images/g8.jpg"  %} alt="" class="img-fluid radius-image">
-                    </div>
-
-                </div>
-                <div class="col-lg-6 mt-lg-0 mt-sm-5 mt-4">
-                    <div class="accordion">
-                        <div class="accordion-item">
-                            <button id="accordion-button-1" aria-expanded="true"><span class="accordion-title">How much does
-                                    a static website cost?</span><span class="icon" aria-hidden="true"></span></button>
-                            <div class="accordion-content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis
-                                    ut. Ut tortor.</p>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button id="accordion-button-2" aria-expanded="false"><span class="accordion-title">How to
-                                    choose a best web template?</span><span class="icon" aria-hidden="true"></span></button>
-                            <div class="accordion-content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis
-                                    ut. Ut pretium.</p>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button id="accordion-button-3" aria-expanded="false"><span class="accordion-title">How to download a
-                                    template?</span><span class="icon" aria-hidden="true"></span></button>
-                            <div class="accordion-content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis
-                                    ut. Ut tortor.</p>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button id="accordion-button-4" aria-expanded="false"><span class="accordion-title">Why should i choose a
-                                    free website?</span><span class="icon" aria-hidden="true"></span></button>
-                            <div class="accordion-content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis
-                                    ut. Ut potenti.</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--//tabs-faqs-->
-
-    <!-- testimonials -->
-    <section class="w3l-clients" id="clients">
-        <!-- /grids -->
-        <div class="cusrtomer-layout py-5">
-            <div class="container py-lg-5 py-md-3">
-                <!-- /grids -->
-                <div class="testimonial-width">
- 
-                        <div class="item">
-                            <div class="testimonial-content">
-                                <div class="testimonial">
-                                    <blockquote>
-                                        <i class="fas fa-quote-left"></i>
-                                        <q> Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit beatae
-                                            laudantium
-                                            voluptate rem ullam dolore nisi voluptatibus esse quasi, doloribus tempora.
-                                            Dolores molestias adipisci dolor sit amet!.
-                                            Lorem ipsum dolor sit amet.</q>
-                                    </blockquote>
-                                    <div class="testi-des">
-
-                                        <div class="peopl align-self">
-                                            <h3>John wilson</h3>
-                                            <p class="indentity">Example City</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /grids -->
-        </div>
-        <!-- //grids -->
-    </section>
-    <!-- //testimonials -->
-    <!--/w3l-project-->
-    <section class="w3l-project-main">
-        <div class="container">
-            <div class="w3l-project py-md-5 py-4">
-                <div class="row py-5 align-items-center">
-                    <div class="col-lg-6 w3l-project-right">
-                        <div class="bottom-info">
-                            <div class="header-section pr-lg-5">
-                                <h6 class="title-subhny mb-2">Stay Update!</h6>
-                                <h3 class="title-w3l">Subscribe to our newsletter
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 w3l-project-left">
-                        <form action="#" method="post" class="subscribe-wthree mt-lg-5 mt-4">
-                            <div class="flex-wrap subscribe-wthree-field">
-                                <input class="form-control" type="email" placeholder="Your Email Address" name="email" required="">
-                                <button class="btn btn-style btn-primary" type="submit">Subscribe</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <!--//w3l-project-->
     <!-- footer -->
     <section class="w3l-footer-29-main">
@@ -337,16 +173,14 @@
                 <div class="row footer-top-29">
                     <div class="col-lg-4 col-md-6 footer-list-29 footer-1 pe-lg-5">
                         <div class="footer-logo mb-4">
-                            <h2><a class="navbar-brand" href="index.html">
-                                    <span class="sublog">Digit</span>Marketing
+                            <h2><a class="navbar-brand" href="{% url 'index' %}">
+                                    <span class="sublog">Votes</span>Phere
                                 </a></h2>
                         </div>
-                        <p>Lorem ipsum dolor sit, amet consectetur elit.Pellen tesque libero ut justo, ultrices in ligula accusantium libero fugit.
+                        <p>Empowering communities with secure, reliable, and seamless online voting solutions. Together, we’re transforming the way democracy works.
 
                         </p>
-                        <div class="w3l-two-buttons mt-4">
-                            <a href="#trail" class="btn btn-primary btn-style"> Try it For Free </a>
-                        </div>
+                        
                         <div class="main-social-footer-29 mt-5">
                             <a href="#facebook" class="facebook"><span class="fab fa-facebook-f"></span></a>
                             <a href="#twitter" class="twitter"><span class="fab fa-twitter"></span></a>
@@ -354,67 +188,15 @@
                             <a href="#linkedin" class="linkedin"><span class="fab fa-linkedin-in"></span></a>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-6 footer-list-29 footer-2 mt-sm-0 mt-5">
-
-                        <ul>
-                            <h6 class="footer-title-29">Links</h6>
-                            <li><a href="about.html">About Us</a></li>
-                            <li><a href="blog.html"> Blog posts</a></li>
-                            <li><a href="services.html">Services</a></li>
-                            <li><a href="blog.html"> Blog posts</a></li>
-                            <li><a href="contact.html">Contact us</a></li>
-
-                        </ul>
-                    </div>
-                    <div class="col-lg-2 col-md-6 footer-list-29 footer-3 mt-lg-0 mt-5">
-                        <h6 class="footer-title-29">Services</h6>
-                        <ul>
-                            <li><a href="#traning">Web Design</a></li>
-                            <li><a href="#traning">Development</a></li>
-                            <li><a href="#traning">Marketing Plans</a></li>
-                            <li><a href="#marketplace">Digital Services</a></li>
-                            <li><a href="#experts">Email Marketing</a></li>
-                            <li><a href="#platform">Product Selling</a></li>
-                        </ul>
-
-                    </div>
-                    <div class="col-lg-2 col-md-6  footer-list-29 footer-4 mt-lg-0 mt-5">
-                        <h6 class="footer-title-29">More Info</h6>
-                        <ul>
-                            <li><a href="#seo">Offline SEO</a></li>
-                            <li><a href="#traning">Development</a></li>
-                            <li><a href="#hack">Growth Hacking</a></li>
-                            <li><a href="#studio">Film Studio</a></li>
-                            <li><a href="#branding">Branding</a></li>
-                            <li><a href="#experts">Email Marketing</a></li>
-                            <li><a href="#marketplace">Lead Generation</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-2 col-md-6  footer-list-29 footer-4 mt-lg-0 mt-5">
-                        <h6 class="footer-title-29">Support</h6>
-                        <ul>
-                            <li><a href="#awards">Awards</a></li>
-                            <li><a href="#secutiry">Security</a></li>
-
-                            <li><a href="#proj">Products</a></li>
-                            <li><a href="#efaq">faQ</a></li>
-                            <li><a href="#help">Help</a></li>
-                            <li><a href="#mail">Mail Us</a></li>
-                            <li><a href="#terms">Terms
-                                </a></li>
-                            <li><a href="#policy">Privacy Policy</a></li>
-
-
-                        </ul>
-                    </div>
+                    
                 </div>
             </div>
         </div>
         <!-- copyright -->
         <section class="w3l-copyright text-center">
             <div class="container">
-                <p class="copy-footer-29">© 2021 DigitMarketing. All rights reserved. Design by <a href="https://w3layouts.com/" target="_blank">
-                        W3Layouts</a></p>
+                <p class="copy-footer-29">© 2021 votesphere. All rights reserved. Design by <a href="" target="_blank">
+                        Votesphere</a></p>
             </div>
 
             <!-- move top -->
