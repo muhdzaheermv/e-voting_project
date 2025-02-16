@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidates</title>
+</head>
+<body>
+    <h2>All Candidates</h2>
+    <ul>
+        {% for candidate in candidates %}
+            <li>{{ candidate.fullname }} ({{ candidate.party }}) - Running for {{ candidate.position.name }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_candidate' %}">Add New Candidate</a>
+</body>
+</html>

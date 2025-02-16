@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from . models import VoterReg,ElectionOfficerReg,Election,Candidate,Vote,EligibleVoter,ElectionManager,PresidingOfficer
+from . models import VoterReg,ElectionOfficerReg,Election,Candidate,Vote,EligibleVoter,ElectionManager,PresidingOfficer,Position
 from django.contrib import messages
 from django.http import HttpResponse
 from datetime import datetime
@@ -36,15 +36,41 @@ def register(request):
    else:
       return render(request,'register.html')
   
+def voter_login(request):
+    if request.method == 'POST':
+        voter_id = request.POST['voter_id']
+
+        try:
+            voter = VoterReg.objects.get(voter_id=voter_id)
+            request.session['voter_id'] = voter.id  # Store voter session
+            return redirect('available_elections')  # Redirect after login
+        except VoterReg.DoesNotExist:
+            return render(request, 'voter_login.html', {'error': 'Invalid Voter ID'})
+
+    return render(request, 'voter_login.html')
+
+def verify_voters(request):
+    voters = VoterReg.objects.filter(verified=False)  # Show unverified voters
+
+    if request.method == 'POST':
+        voter_id = request.POST.get('voter_id')
+        voter = VoterReg.objects.get(voter_id=voter_id)
+        voter.verified = True
+        voter.save()
+        return redirect('verify_voters')  # Refresh page
+
+    return render(request, 'verify_voters.html', {'voters': voters})
+
+
+  
 # def login(request):
 #    if request.method=='POST':
-#       uname = request.POST.get('runame')
-#       passw = request.POST.get('rpass')
-#       cr = VoterReg.objects.filter(username=uname,password=passw)
+#       vid = request.POST.get('rvid')
+#       cr = VoterReg.objects.filter(voter_id=vid)
 #       if cr:
-#          details = VoterReg.objects.get(username=uname, password = passw)
-#          username = details.username
-#          request.session['cs']=username
+#          details = VoterReg.objects.get(voter_id=vid)
+#          voter_id = details.voter_id
+#          request.session['cs']=voter_id
 
 #          return render(request,'home.html')
 #       else:
@@ -53,18 +79,18 @@ def register(request):
 #    else: 
 #       return render(request,'login.html')
   
-def login(request):
-    if request.method == 'POST':
-        voter_id = request.POST['voter_id']
+# def login(request):
+#     if request.method == 'POST':
+#         voter_id = request.POST['voter_id']
 
-        try:
-            voter = VoterReg.objects.get(voter_id=voter_id)  # Authenticate using voter_id
-            request.session['voter_id'] = voter.id  # Store voter ID in session
-            return redirect('available_elections')  # Redirect to voter dashboard
-        except VoterReg.DoesNotExist:
-            return render(request, 'login.html', {'error': 'Invalid Voter ID'})
+#         try:
+#             voter = VoterReg.objects.get(voter_id=voter_id)  # Authenticate using voter_id
+#             request.session['voter_id'] = voter.id  # Store voter ID in session
+#             return redirect('available_elections')  # Redirect to voter dashboard
+#         except VoterReg.DoesNotExist:
+#             return render(request, 'login.html', {'error': 'Invalid Voter ID'})
 
-    return render(request, 'login.html')
+#     return render(request, 'login.html')
 
 # def login(request):
 #    if request.method=='POST':
@@ -123,38 +149,76 @@ def officer_login(request):
 
   
 # views.py
+# def create_election(request):
+#     officer_id = request.session.get('lcu')  # Get the officer's ID from the session
+
+#     if request.method == 'POST':
+#         election_no = request.POST.get('relection_no')
+#         fname = request.POST.get('rfname')
+#         start_time = request.POST.get('rstime')
+#         end_time = request.POST.get('retime')
+#         description = request.POST.get('rdescription')
+#         status = request.POST.get('rstatus')
+
+#         # Check if the election number already exists
+#         if Election.objects.filter(election_no=election_no).exists():
+#             messages.error(request, 'Election number already exists. Please choose a different one.')
+#             return render(request, 'create_election.html')
+
+#         # Get the officer from the session and create the election
+#         officer = ElectionOfficerReg.objects.get(id_no=officer_id)
+#         Election.objects.create(
+#             election_officer=officer,  # Link the election to the officer
+#             election_no=election_no,
+#             name=fname,
+#             start_time=start_time,
+#             end_time=end_time,
+#             description=description,
+#             status=status
+#         )
+
+#         messages.success(request, 'Election created successfully!')
+#         return redirect('officer_home')  # Redirect to officer home page
+
+#     return render(request, 'create_election.html')
+
 def create_election(request):
-    officer_id = request.session.get('lcu')  # Get the officer's ID from the session
+    if request.method == "POST":
+        name = request.POST["name"]
+        description = request.POST["description"]
+        start_date = request.POST["start_date"]
+        end_date = request.POST["end_date"]
+        
+        Election.objects.create(name=name, description=description, start_date=start_date, end_date=end_date)
+        return redirect("elections")
 
-    if request.method == 'POST':
-        election_no = request.POST.get('relection_no')
-        fname = request.POST.get('rfname')
-        start_time = request.POST.get('rstime')
-        end_time = request.POST.get('retime')
-        description = request.POST.get('rdescription')
-        status = request.POST.get('rstatus')
+    return render(request, "create_election.html")
 
-        # Check if the election number already exists
-        if Election.objects.filter(election_no=election_no).exists():
-            messages.error(request, 'Election number already exists. Please choose a different one.')
-            return render(request, 'create_election.html')
+def add_candidate(request):
+    elections = Election.objects.all()
+    positions = Position.objects.all()
 
-        # Get the officer from the session and create the election
-        officer = ElectionOfficerReg.objects.get(id_no=officer_id)
-        Election.objects.create(
-            election_officer=officer,  # Link the election to the officer
-            election_no=election_no,
-            name=fname,
-            start_time=start_time,
-            end_time=end_time,
-            description=description,
-            status=status
-        )
+    if request.method == "POST":
+        fullname = request.POST["fullname"]
+        party = request.POST["party"]
+        election_id = request.POST["election"]
+        position_id = request.POST["position"]
+        
+        election = Election.objects.get(id=election_id)
+        position = Position.objects.get(id=position_id)
 
-        messages.success(request, 'Election created successfully!')
-        return redirect('officer_home')  # Redirect to officer home page
+        Candidate.objects.create(fullname=fullname, party=party, election=election, position=position)
+        return redirect("candidates")
 
-    return render(request, 'create_election.html')
+    return render(request, "add_candidate.html", {"elections": elections, "positions": positions})
+
+def list_elections(request):
+    elections = Election.objects.all()
+    return render(request, "elections.html", {"elections": elections})
+
+def list_candidates(request):
+    candidates = Candidate.objects.all()
+    return render(request, "candidates.html", {"candidates": candidates})
 
   
 def election_list(request):
@@ -279,49 +343,96 @@ def available_elections(request):
     return render(request, 'available_elections.html', {'elections': elections})
 
 
-def vote(request, election_id):
-    # Ensure the voter is logged in
-    voter_id = request.session.get('cs')
-    if not voter_id:
-        return redirect('login')
+# def vote(request, election_id):
+#     # Ensure the voter is logged in
+#     voter_id = request.session.get('cs')
+#     if not voter_id:
+#         return redirect('login')
 
-    # Get the voter and election
-    voter = get_object_or_404(VoterReg, voter_id=voter_id)
-    election = get_object_or_404(Election, id=election_id)
-    candidates = Candidate.objects.filter(election=election)
+#     # Get the voter and election
+#     voter = get_object_or_404(VoterReg, voter_id=voter_id)
+#     election = get_object_or_404(Election, id=election_id)
+#     candidates = Candidate.objects.filter(election=election)
 
-    # Verify if the voter is eligible
+#     # Verify if the voter is eligible
     
 
-    # Handle vote submission
-    if request.method == 'POST':
-        candidate_id = request.POST.get('candidate_id')
+#     # Handle vote submission
+#     if request.method == 'POST':
+#         candidate_id = request.POST.get('candidate_id')
+
+#         try:
+#             # Ensure the candidate exists and belongs to the given election
+#             candidate = candidates.get(id=candidate_id)
+
+#             # Check if the voter has already voted in this election
+#             if not Vote.objects.filter(voter=voter, election=election).exists():
+#                 # Save the vote
+#                 Vote(voter=voter, election=election, candidate=candidate).save()
+#                 return render(request, 'login.html', {'message': 'Vote cast successfully!'})
+
+#             return render(request, 'vote.html', {
+#                 'election': election,
+#                 'candidates': candidates,
+#                 'message': 'You have already voted in this election.'
+#             })
+
+#         except Candidate.DoesNotExist:
+#             # If the candidate does not exist, show an error message
+#             return render(request, 'vote.html', {
+#                 'election': election,
+#                 'candidates': candidates,
+#                 'message': 'Invalid candidate selection. Please try again.'
+#             })
+
+#     return render(request, 'vote.html', {'election': election, 'candidates': candidates})
+
+# def vote(request, election_id):
+#     if 'voter_id' not in request.session:
+#         return redirect('voter_login')  # Redirect if not logged in
+
+#     voter = VoterReg.objects.get(id=request.session['voter_id'])
+
+#     if not voter.verified:
+#         return render(request, 'vote.html', {'message': 'You cannot vote. The presiding officer has not verified you.'})
+
+#     # Logic to display candidates and allow voting
+#     return render(request, 'vote.html', {'voter': voter})
+
+def candidate_login(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
 
         try:
-            # Ensure the candidate exists and belongs to the given election
-            candidate = candidates.get(id=candidate_id)
-
-            # Check if the voter has already voted in this election
-            if not Vote.objects.filter(voter=voter, election=election).exists():
-                # Save the vote
-                Vote(voter=voter, election=election, candidate=candidate).save()
-                return render(request, 'login.html', {'message': 'Vote cast successfully!'})
-
-            return render(request, 'vote.html', {
-                'election': election,
-                'candidates': candidates,
-                'message': 'You have already voted in this election.'
-            })
-
+            candidate = Candidate.objects.get(email=email, password=password)
+            return redirect('candidate_dashboard')  # Redirect after login
         except Candidate.DoesNotExist:
-            # If the candidate does not exist, show an error message
-            return render(request, 'vote.html', {
-                'election': election,
-                'candidates': candidates,
-                'message': 'Invalid candidate selection. Please try again.'
-            })
+            return render(request, 'candidate_login.html', {'error': 'Invalid email or password'})
 
-    return render(request, 'vote.html', {'election': election, 'candidates': candidates})
+    return render(request, 'candidate_login.html')
+
+# Voting Page
+def vote(request, election_id, voter_id):
+    try:
+        positions = Position.objects.filter(election_id=election_id)
+    except Election.DoesNotExist:
+        return render(request, 'vote.html', {'error': 'Election not found'})
+
+    if request.method == "POST":
+        candidate_id = request.POST.get("candidate_id")
+        selected_candidate = Candidate.objects.get(id=candidate_id)
+        Vote.objects.create(voter_id=voter_id, candidate=selected_candidate)
+        return redirect("vote_success")  # Redirect after voting
+
+    return render(request, 'vote.html', {'positions': positions, 'voter_id': voter_id})
+
+# Election Campaign Page
+def campaign(request):
+    elections = Election.objects.all()
+    candidates = Candidate.objects.all()
+    return render(request, 'campaign.html', {'elections': elections, 'candidates': candidates})
+
 
 
 
@@ -597,24 +708,67 @@ def presiding_officer_dashboard(request):
 
     return render(request, 'presiding_officer_dashboard.html', {'officer': officer, 'voters': voters, 'query': query})
 
-def voter_verify(request):
+# def voter_verify(request):
     
-    voter_username = request.session.get('cs')
-    if not voter_username:
-        return redirect('login')
+#     voter_username = request.session.get('cs')
+#     if not voter_username:
+#         return redirect('login')
 
-    elections = Election.objects.all()
+#     elections = Election.objects.all()
     
-    voter_verified = None
+#     voter_verified = None
+#     if request.method == 'POST':
+#         voter_input = request.POST['voter_input']
+
+#         try:
+#             # Try finding the voter by username or email
+#             voter = VoterReg.objects.get(username=voter_input) or VoterReg.objects.get(email=voter_input)
+#             voter_verified = voter.verified  # Store verification status
+
+#         except VoterReg.DoesNotExist:
+#             voter_verified = False  # If no such voter found
+
+#     return render(request, 'voter_verify.html', {'voter_verified': voter_verified,'elections': elections})
+
+def verify_voters(request):
+    voters = VoterReg.objects.filter(verified=False)  # Show unverified voters
+
     if request.method == 'POST':
-        voter_input = request.POST['voter_input']
-
+        voter_id = request.POST.get('voter_id')  # Get voter_id from form
         try:
-            # Try finding the voter by username or email
-            voter = VoterReg.objects.get(username=voter_input) or VoterReg.objects.get(email=voter_input)
-            voter_verified = voter.verified  # Store verification status
-
+            voter = VoterReg.objects.get(voter_id=voter_id)  # ✅ Use voter_id
+            voter.verified = True
+            voter.save()
         except VoterReg.DoesNotExist:
-            voter_verified = False  # If no such voter found
+            return render(request, 'verify_voters.html', {'voters': voters, 'error': 'Voter ID not found'})
 
-    return render(request, 'voter_verify.html', {'voter_verified': voter_verified,'elections': elections})
+    return render(request, 'verify_voters.html', {'voters': voters})
+
+import openpyxl
+
+def upload_success(request):
+    return render(request, 'upload_success.html')
+
+def upload_voters(request):
+    if request.method == 'POST' and request.FILES['voter_file']:
+        voter_file = request.FILES['voter_file']
+        workbook = openpyxl.load_workbook(voter_file)
+        sheet = workbook.active  # Get the first sheet
+
+        for row in sheet.iter_rows(min_row=2, values_only=True):  # Skip header row
+            voter_id, fullname, contact, email = row
+            
+            # Check if voter ID already exists
+            if not VoterReg.objects.filter(voter_id=voter_id).exists():
+                VoterReg.objects.create(
+                    voter_id=voter_id,
+                    fullname=fullname,
+                    contact=contact,
+                    email=email
+                )
+            else:
+                print(f"Voter ID {voter_id} already exists. Skipping...")
+
+        return redirect('upload_success')  # Redirect after upload
+
+    return render(request, 'upload_voters.html')

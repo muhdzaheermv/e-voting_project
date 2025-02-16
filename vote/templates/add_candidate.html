@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Candidate</title>
+</head>
+<body>
+    <h2>Add Candidate</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Full Name:</label>
+        <input type="text" name="fullname" required><br>
+
+        <label>Party:</label>
+        <input type="text" name="party" required><br>
+
+        <label>Select Election:</label>
+        <select name="election" required>
+            {% for election in elections %}
+                <option value="{{ election.id }}">{{ election.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label>Select Position:</label>
+        <select name="position" required>
+            {% for position in positions %}
+                <option value="{{ position.id }}">{{ position.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <button type="submit">Add Candidate</button>
+    </form>
+</body>
+</html>

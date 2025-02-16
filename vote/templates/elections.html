@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Elections</title>
+</head>
+<body>
+    <h2>All Elections</h2>
+    <ul>
+        {% for election in elections %}
+            <li>{{ election.name }} - {{ election.start_date }} to {{ election.end_date }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'create_election' %}">Create New Election</a>
+</body>
+</html>

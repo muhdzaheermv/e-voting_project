@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify Voters</title>
+</head>
+<body>
+    <h2>Pending Voter Verifications</h2>
+    <table border="1">
+        <tr>
+            <th>Voter ID</th>
+            <th>Full Name</th>
+            <th>Action</th>
+        </tr>
+        {% for voter in voters %}
+        <tr>
+            <td>{{ voter.voter_id }}</td>
+            <td>{{ voter.fullname }}</td>
+            <td>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="voter_id" value="{{ voter.voter_id }}">
+                    <button type="submit">Verify</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

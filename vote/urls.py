@@ -14,7 +14,7 @@ urlpatterns = [
    path('index/',views.index,name='index'),  
    
    path('register/',views.register,name='register'), 
-   path('login/',views.login,name='login'),
+#    path('login/',views.login,name='login'),
    
    path('available_elections/', views.available_elections, name='available_elections'),
     path('vote/<int:election_id>/', views.vote, name='vote'),
@@ -70,7 +70,23 @@ urlpatterns = [
     path('presiding_officer/login/', views.login_presiding_officer, name='login_presiding_officer'),
     path('presiding_officer/dashboard/', views.presiding_officer_dashboard, name='presiding_officer_dashboard'),
     
-    path('voter/verify/', views.voter_verify, name='voter_verify'),
+    # path('voter/verify/', views.voter_verify, name='voter_verify'),
+    path('voter/verify/', views.verify_voters, name='verify_voters'),
+    path('upload-voters/', views.upload_voters, name='upload_voters'),
+    path('voter/login/', views.voter_login, name='voter_login'),
+    path('voter/verify/', views.verify_voters, name='verify_voters'),
+    # path('vote/<int:election_id>/', views.vote, name='vote'),
+    
+    path('upload-success/', views.upload_success, name='upload_success'),
+    
+    path('candidate/login/', views.candidate_login, name='candidate_login'),
+    path('vote/<int:election_id>/<str:voter_id>/', views.vote, name='vote'),
+    path('campaign/', views.campaign, name='campaign'),
+    
+    path("elections/", views.list_elections, name="elections"),
+    path("elections/create/", views.create_election, name="create_election"),
+    path("candidates/", views.list_candidates, name="candidates"),
+    path("candidates/add/", views.add_candidate, name="add_candidate"),
     
      
      
